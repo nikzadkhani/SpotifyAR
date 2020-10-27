@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SpotifyAR</string>
+    <string name="last_played_song">You last played a song called </string>
+    <string name="song">Song</string>
+    <string name="by">by</string>
+    <string name="artist">Artist</string>
+    <string name="welcome_user">Welcome User!</string>
+    <string name="select_a_song">SELECT A SONG</string>
+</resources>

@@ -1,0 +1,4 @@
+include ':spotify-app-remote'
+include ':spotify-auth-release-1.2.1'
+include ':app'
+rootProject.name = "SpotifyAR"
