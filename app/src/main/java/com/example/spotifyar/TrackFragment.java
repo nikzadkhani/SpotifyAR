@@ -26,12 +26,10 @@ import java.util.List;
  */
 public class TrackFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    private ListActivityControlFragmentListener LACFL;
+    private SongService songService;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,7 +51,7 @@ public class TrackFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        LACFL = (ListActivityControlFragmentListener) context;
+        songService = new SongService(context);
     }
 
     @Override
@@ -86,8 +84,17 @@ public class TrackFragment extends Fragment {
             Song song = new Song("h", "song name", artists ,"");
             TrackItem trackItem = new TrackItem(song);
 
-            List<TrackItem> libraryTracks = Arrays.asList(new TrackItem[]{trackItem});
-            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(libraryTracks));
+            songService.getLibraryTracks(() -> {
+                Song[] songs = songService.getLibrarySongs();
+                TrackItem[] tempTracks = new TrackItem[songs.length];
+                for (int i = 0; i < songs.length; i++) {
+                    tempTracks[i] = new TrackItem(songs[i]);
+                }
+                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tempTracks)));
+            });
+
+
+
         }
         return view;
     }
