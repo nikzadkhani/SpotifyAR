@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SongService songService;
     private ArrayList<Song> recentlyPlayedTracks;
-    private ArrayList<Song> librarySongs;
+    private Song[] librarySongs;
     private ArrayList<TrackItem> libraryTracks;
     private PlayerService playerService;
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         songService.getLibraryTracks(() -> {
            librarySongs = songService.getLibrarySongs();
 
-           Toast.makeText(getApplicationContext(), librarySongs.get(0).getName(), Toast.LENGTH_LONG).show();
+           Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();
 //           playerService.addSongToPlaybackQueue(librarySongs.get(0));
 //           playerService.playQueuedSong();
 //            Log.d("ListActivity", libraryTracks.get(0).toString());
