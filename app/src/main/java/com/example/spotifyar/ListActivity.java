@@ -1,15 +1,13 @@
 package com.example.spotifyar;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity implements ListActivityControlFragmentListener {
-    ArrayList<TrackItem> tracks;
+public class ListActivity extends AppCompatActivity {
+    List<TrackItem> tracks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,13 +17,4 @@ public class ListActivity extends AppCompatActivity implements ListActivityContr
 //        tracks = (ArrayList<TrackItem>) bundle.get("libraryTracks");
     }
 
-    @Override
-    public ArrayList<TrackItem> getLibraryTracks() {
-        SongService songService = new SongService(getApplicationContext());
-        songService.getLibraryTracks(() -> {
-            Song[] songs = songService.getLibrarySongs();
-
-        });
-        return tracks;
-    }
 }
