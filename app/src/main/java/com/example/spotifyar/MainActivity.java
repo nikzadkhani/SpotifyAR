@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView userWelcome;
-    private TextView songView;
-    private TextView artistView;
-    private Button selectSongBtn;
+    private MaterialTextView userWelcome;
+    private MaterialTextView songView;
+    private MaterialTextView artistView;
+    private MaterialButton selectSongBtn;
 
     private SongService songService;
     private ArrayList<Song> recentlyPlayedTracks;
@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         songService = new SongService(getApplicationContext());
-        userWelcome = (TextView) findViewById(R.id.userWelcome);
-        songView = (TextView) findViewById(R.id.lastPlayedSong);
-        artistView = (TextView) findViewById(R.id.artistView);
-        selectSongBtn = (Button) findViewById(R.id.selectSongBtn);
+        userWelcome = (MaterialTextView) findViewById(R.id.userWelcome);
+        songView = (MaterialTextView) findViewById(R.id.lastPlayedSong);
+        artistView = (MaterialTextView) findViewById(R.id.artistView);
+        selectSongBtn = (MaterialButton) findViewById(R.id.selectSongBtn);
 
         SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
         String displayName = sharedPreferences.getString("display_name", "User");
