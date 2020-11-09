@@ -8,7 +8,7 @@
     android:background="#252225"
     tools:context=".MainActivity">
 
-    <TextView
+    <MaterialTextView
         android:id="@+id/txtView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lastPlayedSong"
         app:layout_constraintVertical_bias="0.060000002" />
 
-    <TextView
+    <MaterialTextView
         android:id="@+id/userWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.111" />
 
-    <TextView
+    <MaterialTextView
         android:id="@+id/lastPlayedSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.339" />
 
-    <TextView
+    <MaterialTextView
         android:id="@+id/txtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userWelcome"
         app:layout_constraintVertical_bias="0.688" />
 
-    <TextView
+    <MaterialTextView
         android:id="@+id/artistView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtView2"
         app:layout_constraintVertical_bias="0.07999998" />
 
-    <Button
+    <MaterialButton
         android:id="@+id/selectSongBtn"
         android:layout_width="138dp"
         android:layout_height="46dp"
