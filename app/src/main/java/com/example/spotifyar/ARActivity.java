@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.animation.TimeInterpolator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,12 +61,13 @@ public class ARActivity extends AppCompatActivity {
 
 
 
+//        andyAnimator.setInterpolator(new )
+
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (andyRenderable == null) {
                         return;
                     }
-
 
                     // Create the Anchor.
                     Anchor anchor = hitResult.createAnchor();
@@ -81,6 +83,7 @@ public class ARActivity extends AppCompatActivity {
                     // Get the animation data called "andy_dance" from the `andyRenderable`.
                     AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
                     ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
+
                     andyAnimator.start();
                     Toast.makeText(this, String.valueOf(andyAnimator.isStarted()), Toast.LENGTH_SHORT).show();
                 });

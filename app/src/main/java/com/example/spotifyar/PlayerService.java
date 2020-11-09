@@ -61,8 +61,6 @@ public class PlayerService {
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
-
-
         };
 
         queue.add(jsonObjectRequest);

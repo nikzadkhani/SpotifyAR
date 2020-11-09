@@ -47,7 +47,6 @@ dependencies {
     implementation "com.google.ar.sceneform:animation:1.15.0"
 
 
-
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'

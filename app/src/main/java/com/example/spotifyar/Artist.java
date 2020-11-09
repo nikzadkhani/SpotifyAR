@@ -6,6 +6,7 @@ public class Artist {
     private String name;
     private String id;
     private String[] genres;
+    private String uri;
 
 
     /**
@@ -14,10 +15,11 @@ public class Artist {
      * @param id
      * @param genres
      */
-    public Artist(String name, String id, String[] genres) {
+    public Artist(String name, String id, String[] genres, String uri) {
         this.name = name;
         this.id = id;
         this.genres = genres;
+        this.uri = uri;
     }
 
 
@@ -31,6 +33,10 @@ public class Artist {
 
     public String[] getGenres() {
         return genres;
+    }
+
+    public String getUri() {
+        return uri;
     }
 
     @Override

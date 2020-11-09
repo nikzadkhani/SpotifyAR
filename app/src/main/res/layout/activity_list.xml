@@ -7,14 +7,52 @@
     tools:context=".ListActivity">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/trackFragment"
         android:name="com.example.spotifyar.TrackFragment"
         android:layout_width="412dp"
-        android:layout_height="594dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="616dp"
+        android:layout_marginBottom="219dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmSongView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout="@layout/track_item_list" />
+
+    <TextView
+        android:id="@+id/confirmSongView"
+        android:layout_width="204dp"
+        android:layout_height="53dp"
+        android:text="@string/song_by_artist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/startArBtn"
+        app:layout_constraintHorizontal_bias="0.301"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/startArBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/let_s_dance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.883"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trackFragment"
+        app:layout_constraintVertical_bias="0.686" />
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/you_have_chosen"
+        app:layout_constraintBottom_toTopOf="@+id/confirmSongView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trackFragment"
+        app:layout_constraintVertical_bias="0.444" />
 </androidx.constraintlayout.widget.ConstraintLayout>

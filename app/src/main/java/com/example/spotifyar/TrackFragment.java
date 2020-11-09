@@ -28,6 +28,7 @@ public class TrackFragment extends Fragment {
     private int mColumnCount = 1;
 
     private SongService songService;
+    private TrackItem[] tracks;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -76,24 +77,21 @@ public class TrackFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-//            ArrayList<TrackItem> libraryTracks = (ArrayList<TrackItem>) LACFL.getLibraryTracks();
-//            Log.d("Track Fragment", libraryTracks.get(0).toString());
-            Artist[] artists = new Artist[] {new Artist("artist", "",new String[]{""})};
-            Song song = new Song("h", "song name", artists ,"");
-            TrackItem trackItem = new TrackItem(song);
 
             songService.getLibraryTracks(() -> {
                 Song[] songs = songService.getLibrarySongs();
-                TrackItem[] tempTracks = new TrackItem[songs.length];
+                tracks = new TrackItem[songs.length];
                 for (int i = 0; i < songs.length; i++) {
-                    tempTracks[i] = new TrackItem(songs[i]);
+                    tracks[i] = new TrackItem(songs[i]);
                 }
-                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tempTracks)));
+                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tracks)));
+                recyclerView.setHasFixedSize(true);
             });
-
-
-
         }
         return view;
+    }
+
+    public TrackItem getTrackAtIndex(int index) {
+        return tracks[index];
     }
 }
