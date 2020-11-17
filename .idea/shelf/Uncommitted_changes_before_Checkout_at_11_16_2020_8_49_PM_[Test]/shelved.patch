@@ -1,0 +1,657 @@
+Index: app/src/main/res/layout/search_activity.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/search_activity.xml	(date 1605577436299)
++++ app/src/main/res/layout/search_activity.xml	(date 1605577436299)
+@@ -0,0 +1,75 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <TextView
++        android:id="@+id/confirmSongView2"
++        android:layout_width="204dp"
++        android:layout_height="53dp"
++        android:layout_marginStart="16dp"
++        android:text="@string/song_by_artist"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toStartOf="@+id/startArBtn"
++        app:layout_constraintHorizontal_bias="0.301"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintVertical_bias="0.966" />
++
++    <TextView
++        android:id="@+id/instructions2"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="24dp"
++        android:text="@string/you_have_chosen"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="0.494"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toBottomOf="@+id/searchList"
++        app:layout_constraintVertical_bias="0.0" />
++
++    <Button
++        android:id="@+id/startArBtn2"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="@string/let_s_dance"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="0.873"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintVertical_bias="0.959" />
++
++    <androidx.recyclerview.widget.RecyclerView
++        android:id="@+id/searchList"
++        android:name="com.example.spotifyar.TrackFragment"
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        android:layout_marginStart="3dp"
++        android:layout_marginEnd="3dp"
++        android:layout_marginBottom="139dp"
++        app:layoutManager="LinearLayoutManager"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toBottomOf="@+id/fragment"
++        tools:context=".TrackFragment"
++        tools:listitem="@layout/track_item" />
++
++    <fragment
++        android:id="@+id/fragment"
++        android:name="com.example.spotifyar.SearchBarFragment"
++        android:layout_width="417dp"
++        android:layout_height="91dp"
++        app:layout_constraintBottom_toTopOf="@+id/searchList"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintVertical_bias="1.0"
++        tools:layout="@layout/fragment_search_bar" />
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_search_bar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_search_bar.xml	(date 1605577436293)
++++ app/src/main/res/layout/fragment_search_bar.xml	(date 1605577436293)
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/frameLayout"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context=".SearchBarFragment">
++
++    <EditText
++        android:id="@+id/searchBar"
++        android:layout_width="165dp"
++        android:layout_height="55dp"
++        android:layout_marginStart="3dp"
++        android:layout_marginTop="23dp"
++        android:layout_marginEnd="17dp"
++        android:ems="10"
++        android:hint="@string/SearchHint"
++        android:inputType="textShortMessage|textLongMessage|text"
++        app:layout_constraintEnd_toStartOf="@+id/spinner"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent" />
++
++    <Button
++        android:id="@+id/searchButton"
++        android:layout_width="100dp"
++        android:layout_height="48dp"
++        android:layout_marginTop="26dp"
++        android:layout_marginEnd="16dp"
++        android:text="@string/Search"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toEndOf="@+id/spinner"
++
++        app:layout_constraintTop_toTopOf="parent" />
++
++    <Spinner
++        android:id="@+id/spinner"
++        android:layout_width="69dp"
++        android:layout_height="45dp"
++        android:layout_marginEnd="11dp"
++        app:layout_constraintBottom_toBottomOf="@+id/searchButton"
++        app:layout_constraintEnd_toStartOf="@+id/searchButton"
++        app:layout_constraintStart_toEndOf="@+id/searchBar"
++        app:layout_constraintTop_toTopOf="@+id/searchButton" />
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_blank.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_blank.xml	(date 1605577436286)
++++ app/src/main/res/layout/fragment_blank.xml	(date 1605577436286)
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="utf-8"?>
++<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context=".BlankFragment">
++
++    <!-- TODO: Update blank fragment layout -->
++    <TextView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:text="@string/hello_blank_fragment" />
++
++</FrameLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/SearchTrackFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SearchTrackFragment.java	(date 1605577436275)
++++ app/src/main/java/com/example/spotifyar/SearchTrackFragment.java	(date 1605577436275)
+@@ -0,0 +1,97 @@
++package com.example.spotifyar;
++
++import android.content.Context;
++import android.content.Intent;
++import android.os.Bundle;
++
++import androidx.annotation.NonNull;
++import androidx.fragment.app.Fragment;
++import androidx.recyclerview.widget.GridLayoutManager;
++import androidx.recyclerview.widget.LinearLayoutManager;
++import androidx.recyclerview.widget.RecyclerView;
++
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.List;
++
++/**
++ * A fragment representing a list of Items.
++ */
++public class SearchTrackFragment extends Fragment {
++
++    private static final String ARG_COLUMN_COUNT = "column-count";
++    private int mColumnCount = 1;
++
++    private SongService songService;
++    private TrackItem[] tracks;
++
++    /**
++     * Mandatory empty constructor for the fragment manager to instantiate the
++     * fragment (e.g. upon screen orientation changes).
++     */
++    public SearchTrackFragment() {
++    }
++
++    // TODO: Customize parameter initialization
++    @SuppressWarnings("unused")
++    public static SearchTrackFragment newInstance(int columnCount) {
++        SearchTrackFragment fragment = new SearchTrackFragment();
++        Bundle args = new Bundle();
++        args.putInt(ARG_COLUMN_COUNT, columnCount);
++        fragment.setArguments(args);
++        return fragment;
++    }
++
++    @Override
++    public void onAttach(@NonNull Context context) {
++        super.onAttach(context);
++        songService = new SongService(context);
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        if (getArguments() != null) {
++            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
++        }
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        View view = inflater.inflate(R.layout.track_item_list, container, false);
++
++
++        // Set the adapter
++        if (view instanceof RecyclerView) {
++            Context context = view.getContext();
++            RecyclerView recyclerView = (RecyclerView) view;
++            if (mColumnCount <= 1) {
++                recyclerView.setLayoutManager(new LinearLayoutManager(context));
++            } else {
++                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
++            }
++
++            songService.getLibraryTracks(() -> {
++                Song[] songs = songService.getLibrarySongs();
++                tracks = new TrackItem[songs.length];
++                for (int i = 0; i < songs.length; i++) {
++                    tracks[i] = new TrackItem(songs[i]);
++                }
++                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tracks)));
++                recyclerView.setHasFixedSize(true);
++            });
++        }
++        return view;
++    }
++
++    public TrackItem getTrackAtIndex(int index) {
++        return tracks[index];
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.os.Handler;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\n\r\nimport com.google.ar.core.ArCoreApk;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n    private final String AR_AVAILABLE = \"AR is available on this device.\";\r\n    private final String AR_UNAVAILABLE = \"AR is unavailable on this device\";\r\n\r\n    private TextView userWelcome;\r\n    private TextView songView;\r\n    private TextView artistView;\r\n    private TextView arAvailabilityView;\r\n    private Button selectSongBtn;\r\n    private Button startAR;\r\n\r\n    private SongService songService;\r\n    private ArrayList<Song> recentlyPlayedTracks;\r\n    private Song[] librarySongs;\r\n    private ArrayList<TrackItem> libraryTracks;\r\n    private PlayerService playerService;\r\n\r\n    private Song song;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        songService = new SongService(getApplicationContext());\r\n        userWelcome = (TextView) findViewById(R.id.userWelcome);\r\n        songView = (TextView) findViewById(R.id.lastPlayedSong);\r\n        artistView = (TextView) findViewById(R.id.artistView);\r\n        arAvailabilityView = (TextView) findViewById(R.id.arAvailabilityView);\r\n        selectSongBtn = (Button) findViewById(R.id.selectSongBtn);\r\n        startAR = (Button) findViewById(R.id.startAR);\r\n\r\n        SharedPreferences sharedPreferences = getSharedPreferences(\"SPOTIFY\", 0);\r\n        String displayName = sharedPreferences.getString(\"display_name\", \"User\");\r\n        userWelcome.setText(\"Welcome \" + displayName + \"!\");\r\n\r\n        getTracks(); // Updates Song view\r\n\r\n        selectSongBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent intent = new Intent(MainActivity.this, ListActivity.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n\r\n        // Test PlayerService Below\r\n        playerService = new PlayerService(getApplicationContext());\r\n\r\n\r\n        // Test to see if AR is supported on device\r\n        setArAvailabilityView();\r\n\r\n        startAR.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent intent = new Intent(MainActivity.this, ARActivity.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    /*\r\n     * This is from https://developers.google.com/ar/develop/java/enable-arcore\r\n     * I think what it is doing is making a network request and then waiting for the\r\n     * request return before calling the function again? I changed it to change the\r\n     * Text for a textview instead.\r\n     */\r\n    private void setArAvailabilityView() {\r\n        ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);\r\n\r\n        if (availability.isTransient()) {\r\n            // Re-query at 5Hz while compatibility is checked in the background.\r\n            new Handler().postDelayed(new Runnable() {\r\n                @Override\r\n                public void run() {\r\n                    setArAvailabilityView();\r\n                }\r\n            }, 200);\r\n        }\r\n        if (availability.isSupported()) {\r\n            arAvailabilityView.setText(AR_AVAILABLE);\r\n        } else { // Unsupported or unknown.\r\n            arAvailabilityView.setText(AR_UNAVAILABLE);\r\n        }\r\n\r\n\r\n    }\r\n\r\n    private void getTracks() {\r\n        songService.getRecentlyPlayedTracks(() -> {\r\n            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();\r\n            updateSong();\r\n        });\r\n\r\n        songService.getLibraryTracks(() -> {\r\n           librarySongs = songService.getLibrarySongs();\r\n\r\n           Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();\r\n//           playerService.addSongToPlaybackQueue(librarySongs.get(0));\r\n//           playerService.playQueuedSong();\r\n//            Log.d(\"ListActivity\", libraryTracks.get(0).toString());\r\n\r\n        });\r\n\r\n    }\r\n\r\n    private void updateSong() {\r\n        if (recentlyPlayedTracks.size() > 0) {\r\n            Song mostRecentTrack = recentlyPlayedTracks.get(0);\r\n            String songName = mostRecentTrack.getName();\r\n            String artistName = mostRecentTrack.getFirstArtistName();\r\n            songView.setText(songName);\r\n            artistView.setText(artistName);\r\n            song = recentlyPlayedTracks.get(0);\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/MainActivity.java	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/java/com/example/spotifyar/MainActivity.java	(date 1605577436253)
+@@ -30,6 +30,8 @@
+     private Button startAR;
+ 
+     private SongService songService;
++    private SearchService searchService;
++
+     private ArrayList<Song> recentlyPlayedTracks;
+     private Song[] librarySongs;
+     private ArrayList<TrackItem> libraryTracks;
+@@ -43,6 +45,7 @@
+         setContentView(R.layout.activity_main);
+ 
+         songService = new SongService(getApplicationContext());
++        searchService = new SearchService(getApplicationContext());
+         userWelcome = (TextView) findViewById(R.id.userWelcome);
+         songView = (TextView) findViewById(R.id.lastPlayedSong);
+         artistView = (TextView) findViewById(R.id.artistView);
+@@ -50,11 +53,18 @@
+         selectSongBtn = (Button) findViewById(R.id.selectSongBtn);
+         startAR = (Button) findViewById(R.id.startAR);
+ 
+-        SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
++        SharedPreferences sharedPreferences = getSharedPreferences("PANCAKE", 0);
+         String displayName = sharedPreferences.getString("display_name", "User");
+         userWelcome.setText("Welcome " + displayName + "!");
+ 
+-        getTracks(); // Updates Song view
++        // getTracks(); // Updates Song view
++        Log.v("Started main activity", "Main");
++
++        songService.getRecentlyPlayedTracks(() -> {
++            Song mostRecentSong = songService.getRecentlyPlayedSongs().get(0);
++            songView.setText(mostRecentSong.getName());
++            artistView.setText(mostRecentSong.getFirstArtistName());
++        });
+ 
+         selectSongBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -109,21 +119,24 @@
+     }
+ 
+     private void getTracks() {
+-        songService.getRecentlyPlayedTracks(() -> {
+-            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();
+-            updateSong();
+-        });
+ 
+         songService.getLibraryTracks(() -> {
+-           librarySongs = songService.getLibrarySongs();
++            librarySongs = songService.getLibrarySongs();
+ 
+-           Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();
++            Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();
+ //           playerService.addSongToPlaybackQueue(librarySongs.get(0));
+ //           playerService.playQueuedSong();
+ //            Log.d("ListActivity", libraryTracks.get(0).toString());
+ 
+         });
+ 
++        songService.getRecentlyPlayedTracks(() -> {
++            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();
++            Log.v("TrackISHERE", recentlyPlayedTracks.get(0).toString());
++            updateSong();
++        });
++
++
+     }
+ 
+     private void updateSong() {
+Index: app/src/main/res/layout/track_item_list.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.recyclerview.widget.RecyclerView xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/list\"\r\n    android:name=\"com.example.spotifyar.TrackFragment\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:layout_marginLeft=\"16dp\"\r\n    android:layout_marginRight=\"16dp\"\r\n    app:layoutManager=\"LinearLayoutManager\"\r\n    tools:context=\".TrackFragment\"\r\n    tools:listitem=\"@layout/track_item\" />
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/track_item_list.xml	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/res/layout/track_item_list.xml	(date 1605577436304)
+@@ -2,7 +2,7 @@
+ <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/list"
++    android:id="@+id/List"
+     android:name="com.example.spotifyar.TrackFragment"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+Index: app/src/main/java/com/example/spotifyar/SearchBarFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SearchBarFragment.java	(date 1605577436270)
++++ app/src/main/java/com/example/spotifyar/SearchBarFragment.java	(date 1605577436270)
+@@ -0,0 +1,137 @@
++package com.example.spotifyar;
++
++import android.content.Context;
++import android.os.Bundle;
++
++import androidx.fragment.app.Fragment;
++
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++import android.widget.Button;
++import android.widget.EditText;
++import android.widget.Spinner;
++
++import com.spotify.protocol.types.Album;
++
++import java.util.ArrayList;
++
++
++/**
++ * A simple {@link Fragment} subclass.
++ * Use the {@link SearchBarFragment#newInstance} factory method to
++ * create an instance of this fragment.
++ */
++public class SearchBarFragment extends Fragment {
++
++ private static final String ARG_PARAM1 = "input";
++private Spinner spinner;
++private String searchInput;
++private Button searchButton;
++private EditText searchBar;
++private String[] dropDown = {"Album", "Artist", "Track"};
++
++
++    public SearchBarFragment() {
++        // Required empty public constructor
++    }
++
++
++    //Needs 3 different methods for 3 different data type TRYING TO OVERLOAD BUT IT WONT LET ME!!
++    public interface ControlFragmentListener {            //this is just an interface definition.
++        public void loadTrackData(ArrayList<Song> tracks); //it could live in its own file.  placed here for convenience.
++        public void loadArtistData(ArrayList<Artist> artists);
++        public void loadAlbumData(ArrayList<Album> albums);
++    }
++
++    ControlFragmentListener CFL;
++
++    public static SearchBarFragment newInstance(String input) {
++        SearchBarFragment fragment = new SearchBarFragment();
++        Bundle args = new Bundle();
++        args.putString(ARG_PARAM1, input);
++        fragment.setArguments(args);
++        return fragment;
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        if (getArguments() != null) {
++            searchInput = getArguments().getString(ARG_PARAM1);
++        }
++    }
++
++    @Override
++    public void onAttach(Context context) {   //The onAttach method, binds the fragment to the owner.  Fragments are hosted by Activities, therefore, context refers to: ____________?
++        super.onAttach(context);
++        CFL = (ControlFragmentListener) context;  //context is a handle to the main activity, let's bind it to our interface.
++    }
++
++
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        // Inflate the layout for this fragment
++        View view = inflater.inflate(R.layout.fragment_search_bar, container, false);
++
++        searchButton = view.findViewById(R.id.searchButton);
++        searchBar = view.findViewById(R.id.searchBar);
++        spinner =  view.findViewById(R.id.spinner);
++
++
++
++// Create an ArrayAdapter using the string array and a default spinner layout
++        ArrayAdapter<CharSequence> adapter;
++        adapter = ArrayAdapter.createFromResource(getContext(), R.array.dropDown, android.R.layout.simple_spinner_item);
++// Specify the layout to use when the list of choices appears
++// adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
++// Apply the adapter to the spinner
++        spinner.setAdapter(adapter);
++
++
++/*        songService.getRecentlyPlayedTracks(() -> {
++            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();
++            Log.v("TrackISHERE", recentlyPlayedTracks.get(0).toString());
++            updateSong();
++        });
++
++*/
++        searchButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                    SearchService searchService = new SearchService(getContext());
++                    String input = searchBar.getText().toString();
++                    String queryType = spinner.getSelectedItem().toString();
++
++                // pass in queryType to searchactivity
++
++               //Assume we have the correct data, now we have to transfer it to the main activity
++                    searchService.getSearchResults(input, queryType, () -> {
++                        if(queryType.equals("Track")){
++                            ArrayList<Song> tracks = searchService.getSongArray();
++                            CFL.loadTrackData(tracks);
++                        }
++                        else if(queryType.equals("Artist")){
++                            ArrayList<Artist> artists = searchService.getArtistArray();
++                            CFL.loadArtistData(artists);
++                        }
++                        else if(queryType.equals("Album")){
++                            ArrayList<Album> albums = searchService.getAlbumArray();
++                            CFL.loadAlbumData(albums);
++                        }
++
++
++                    });
++                    
++            }
++        });
++
++        return view;
++    }
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/SearchActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SearchActivity.java	(date 1605577436260)
++++ app/src/main/java/com/example/spotifyar/SearchActivity.java	(date 1605577436260)
+@@ -0,0 +1,69 @@
++package com.example.spotifyar;
++
++import android.os.Bundle;
++import android.view.View;
++import android.widget.Button;
++import android.widget.TextView;
++
++import androidx.appcompat.app.AppCompatActivity;
++
++import com.spotify.protocol.types.Album;
++
++import java.util.ArrayList;
++
++public class SearchActivity extends AppCompatActivity implements SearchBarFragment.ControlFragmentListener {
++    private Button danceBtn;
++    private TextView songConfirmView;
++    SearchResultListFragment SearchResultFrag;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.search_activity);
++
++
++        danceBtn = (Button) findViewById(R.id.startArBtn2);
++        songConfirmView = (TextView) findViewById(R.id.confirmSongView2);
++
++        SearchResultFrag = (SearchResultListFragment) getSupportFragmentManager().findFragmentById(R.id.searchList);
++
++        danceBtn.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                // Really awful way of figuring out which song the user chose
++                // Check adapter ViewHolder onclick for this works.
++                String trackIndexString = songConfirmView.getText().toString().split("\\.")[0];
++                int trackIndex = Integer.parseInt(trackIndexString);
++                String chosenTrackUri = SearchResultFrag.getTrackAtIndex(trackIndex).uri;
++            }
++        });
++    }
++
++/*
++    @Override
++    public void guessCheck(String msg) {
++        Log.v("onGuessCheck", "Step before txtResult" );
++        topFrag receivingFragment = (topFrag)getFragmentManager().findFragmentById(R.id.fragment7);
++        receivingFragment.setResult(msg);
++
++    }
++}
++*/
++
++    @Override
++    public void loadTrackData(ArrayList<Song> tracks) {
++       //Send the data into the top fragment (Send the data into Search
++        //Pass the list into the adapter
++        SearchResultFrag.updateTrackAdapter(tracks);
++    }
++
++    @Override
++    public void loadArtistData(ArrayList<Artist> artists) {
++
++    }
++
++    @Override
++    public void loadAlbumData(ArrayList<Album> albums) {
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/SplashActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.util.Log;\r\nimport android.view.Window;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.spotify.sdk.android.auth.AuthorizationClient;\r\nimport com.spotify.sdk.android.auth.AuthorizationRequest;\r\nimport com.spotify.sdk.android.auth.AuthorizationResponse;\r\n\r\n/**\r\n * Start Activity, authenticate Spotify\r\n */\r\npublic class SplashActivity extends AppCompatActivity {\r\n\r\n    private SharedPreferences.Editor editor;\r\n    private SharedPreferences sharedPreferences;\r\n\r\n    private RequestQueue queue;\r\n\r\n    private static final String CLIENT_ID = \"730bb52a8e884ac9bb4e03b49856815f\";\r\n    private static final String REDIRECT_URI = \"https://com.example.spotifyar/callback\";\r\n    private static final int REQUEST_CODE = 1337;\r\n    private static final String[] SCOPES =  new String[] {\"user-read-currently-playing\",\r\n            \"user-read-email\", \"user-read-private\", \"user-library-read\", \"user-modify-playback-state\",\r\n            \"playlist-read-collaborative\"};\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        requestWindowFeature(Window.FEATURE_NO_TITLE);\r\n        getSupportActionBar().hide();\r\n        setContentView(R.layout.activity_splash);\r\n\r\n\r\n        authenticateSpotify();\r\n\r\n        sharedPreferences = this.getSharedPreferences(\"SPOTIFY\", 0);\r\n        queue = Volley.newRequestQueue(this);\r\n    }\r\n\r\n\r\n    private void waitForUserInfo() {\r\n        UserService userService = new UserService(queue, sharedPreferences);\r\n        userService.get(() -> {\r\n            User user = userService.getUser();\r\n            Log.d(\"service_user_name\", String.valueOf(user.getId()));\r\n            editor = getSharedPreferences(\"SPOTIFY\", 0).edit();\r\n            editor.putString(\"userid\", user.getId());\r\n            editor.putString(\"display_name\", user.getDisplay_name());\r\n            Log.d(\"STARTING\", \"GOT USER INFORMATION\");\r\n            // We use commit instead of apply because we need the information stored immediately\r\n            editor.commit();\r\n            startMainActivity();\r\n        });\r\n\r\n    }\r\n\r\n    private void startMainActivity() {\r\n        Intent intent = new Intent(SplashActivity.this, MainActivity.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n\r\n    private void authenticateSpotify() {\r\n        AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(CLIENT_ID,\r\n                AuthorizationResponse.Type.TOKEN, REDIRECT_URI);\r\n        builder.setScopes(SCOPES);\r\n        AuthorizationRequest request = builder.build();\r\n        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);\r\n    }\r\n\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {\r\n        super.onActivityResult(requestCode, resultCode, intent);\r\n\r\n        // Check if result comes from the correct activity\r\n        if (requestCode == REQUEST_CODE) {\r\n            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);\r\n\r\n            switch (response.getType()) {\r\n                // Response was successful and contains auth token\r\n                case TOKEN:\r\n                    editor = getSharedPreferences(\"SPOTIFY\", 0).edit();\r\n                    editor.putString(\"token\", response.getAccessToken());\r\n                    Log.d(\"STARTING\", \"GOT AUTH TOKEN\");\r\n                    editor.apply();\r\n                    waitForUserInfo();\r\n                    break;\r\n\r\n                // Auth flow returned an error\r\n                case ERROR:\r\n                    // Handle error response\r\n                    break;\r\n\r\n                // Most likely auth flow was cancelled\r\n                default:\r\n                    // Handle other cases\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SplashActivity.java	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/java/com/example/spotifyar/SplashActivity.java	(date 1605577436280)
+@@ -39,10 +39,11 @@
+         getSupportActionBar().hide();
+         setContentView(R.layout.activity_splash);
+ 
+-
++        Log.v("test","inSplashBeforeAuthentication");
+         authenticateSpotify();
+ 
+-        sharedPreferences = this.getSharedPreferences("SPOTIFY", 0);
++
++        sharedPreferences = this.getSharedPreferences("PANCAKE", 0);
+         queue = Volley.newRequestQueue(this);
+     }
+ 
+@@ -52,7 +53,7 @@
+         userService.get(() -> {
+             User user = userService.getUser();
+             Log.d("service_user_name", String.valueOf(user.getId()));
+-            editor = getSharedPreferences("SPOTIFY", 0).edit();
++            editor = getSharedPreferences("PANCAKE", 0).edit();
+             editor.putString("userid", user.getId());
+             editor.putString("display_name", user.getDisplay_name());
+             Log.d("STARTING", "GOT USER INFORMATION");
+@@ -75,12 +76,19 @@
+         builder.setScopes(SCOPES);
+         AuthorizationRequest request = builder.build();
+         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
++        Log.v("test","inSplashAuthenticationScreen");
++        try {
++            Thread.sleep(5);
++        } catch (InterruptedException e) {
++            e.printStackTrace();
++        }
+     }
+ 
+ 
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+         super.onActivityResult(requestCode, resultCode, intent);
++        Log.v("test","inSplashAfterAuthentication");
+ 
+         // Check if result comes from the correct activity
+         if (requestCode == REQUEST_CODE) {
+@@ -89,7 +97,7 @@
+             switch (response.getType()) {
+                 // Response was successful and contains auth token
+                 case TOKEN:
+-                    editor = getSharedPreferences("SPOTIFY", 0).edit();
++                    editor = getSharedPreferences("PANCAKE", 0).edit();
+                     editor.putString("token", response.getAccessToken());
+                     Log.d("STARTING", "GOT AUTH TOKEN");
+                     editor.apply();
+@@ -104,6 +112,7 @@
+                 // Most likely auth flow was cancelled
+                 default:
+                     // Handle other cases
++                    Log.v("resp", String.valueOf(response));
+             }
+         }
+     }

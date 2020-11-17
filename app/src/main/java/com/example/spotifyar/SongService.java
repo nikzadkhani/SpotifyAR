@@ -27,7 +27,7 @@ public class SongService {
     private RequestQueue queue;
 
     public SongService(Context context) {
-        sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
+        sharedPreferences = context.getSharedPreferences("PANCAKE", 0);
         queue = Volley.newRequestQueue(context);
     }
 
@@ -65,6 +65,7 @@ public class SongService {
                 Map<String, String> headers = new HashMap<>();
                 String token = sharedPreferences.getString("token", "");
                 String auth = "Bearer " + token;
+                Log.v("Auth", auth);
                 headers.put("Authorization", auth);
                 return headers;
             }

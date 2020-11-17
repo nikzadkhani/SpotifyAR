@@ -1,0 +1,109 @@
+Index: app/src/main/java/com/example/spotifyar/SplashActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.util.Log;\r\nimport android.view.Window;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.spotify.sdk.android.auth.AuthorizationClient;\r\nimport com.spotify.sdk.android.auth.AuthorizationRequest;\r\nimport com.spotify.sdk.android.auth.AuthorizationResponse;\r\n\r\n/**\r\n * Start Activity, authenticate Spotify\r\n */\r\npublic class SplashActivity extends AppCompatActivity {\r\n\r\n    private SharedPreferences.Editor editor;\r\n    private SharedPreferences sharedPreferences;\r\n\r\n    private RequestQueue queue;\r\n\r\n    private static final String CLIENT_ID = \"730bb52a8e884ac9bb4e03b49856815f\";\r\n    private static final String REDIRECT_URI = \"https://com.example.spotifyar/callback\";\r\n    private static final int REQUEST_CODE = 1337;\r\n    private static final String[] SCOPES =  new String[] {\"user-read-currently-playing\",\r\n            \"user-read-email\", \"user-read-private\", \"user-library-read\", \"user-modify-playback-state\",\r\n            \"playlist-read-collaborative\"};\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        requestWindowFeature(Window.FEATURE_NO_TITLE);\r\n        getSupportActionBar().hide();\r\n        setContentView(R.layout.activity_splash);\r\n\r\n\r\n        authenticateSpotify();\r\n\r\n        sharedPreferences = this.getSharedPreferences(\"SPOTIFY\", 0);\r\n        queue = Volley.newRequestQueue(this);\r\n    }\r\n\r\n\r\n    private void waitForUserInfo() {\r\n        UserService userService = new UserService(queue, sharedPreferences);\r\n        userService.get(() -> {\r\n            User user = userService.getUser();\r\n            Log.d(\"service_user_name\", String.valueOf(user.getId()));\r\n            editor = getSharedPreferences(\"SPOTIFY\", 0).edit();\r\n            editor.putString(\"userid\", user.getId());\r\n            editor.putString(\"display_name\", user.getDisplay_name());\r\n            Log.d(\"STARTING\", \"GOT USER INFORMATION\");\r\n            // We use commit instead of apply because we need the information stored immediately\r\n            editor.commit();\r\n            startMainActivity();\r\n        });\r\n\r\n    }\r\n\r\n    private void startMainActivity() {\r\n        Intent intent = new Intent(SplashActivity.this, MainActivity.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n\r\n    private void authenticateSpotify() {\r\n        AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(CLIENT_ID,\r\n                AuthorizationResponse.Type.TOKEN, REDIRECT_URI);\r\n        builder.setScopes(SCOPES);\r\n        AuthorizationRequest request = builder.build();\r\n        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);\r\n    }\r\n\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {\r\n        super.onActivityResult(requestCode, resultCode, intent);\r\n\r\n        // Check if result comes from the correct activity\r\n        if (requestCode == REQUEST_CODE) {\r\n            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);\r\n\r\n            switch (response.getType()) {\r\n                // Response was successful and contains auth token\r\n                case TOKEN:\r\n                    editor = getSharedPreferences(\"SPOTIFY\", 0).edit();\r\n                    editor.putString(\"token\", response.getAccessToken());\r\n                    Log.d(\"STARTING\", \"GOT AUTH TOKEN\");\r\n                    editor.apply();\r\n                    waitForUserInfo();\r\n                    break;\r\n\r\n                // Auth flow returned an error\r\n                case ERROR:\r\n                    // Handle error response\r\n                    break;\r\n\r\n                // Most likely auth flow was cancelled\r\n                default:\r\n                    // Handle other cases\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SplashActivity.java	(revision 2a93cdc4d559921dad0d690363f2bb5311104c4c)
++++ app/src/main/java/com/example/spotifyar/SplashActivity.java	(date 1605377147487)
+@@ -39,9 +39,10 @@
+         getSupportActionBar().hide();
+         setContentView(R.layout.activity_splash);
+ 
+-
++        Log.v("test","inSplashBeforeAuthentication");
+         authenticateSpotify();
+ 
++
+         sharedPreferences = this.getSharedPreferences("SPOTIFY", 0);
+         queue = Volley.newRequestQueue(this);
+     }
+@@ -75,12 +76,19 @@
+         builder.setScopes(SCOPES);
+         AuthorizationRequest request = builder.build();
+         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
++        Log.v("test","inSplashAuthenticationScreen");
++        try {
++            Thread.sleep(5);
++        } catch (InterruptedException e) {
++            e.printStackTrace();
++        }
+     }
+ 
+ 
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+         super.onActivityResult(requestCode, resultCode, intent);
++        Log.v("test","inSplashAfterAuthentication");
+ 
+         // Check if result comes from the correct activity
+         if (requestCode == REQUEST_CODE) {
+@@ -104,6 +112,7 @@
+                 // Most likely auth flow was cancelled
+                 default:
+                     // Handle other cases
++                    Log.v("resp", String.valueOf(response));
+             }
+         }
+     }
+Index: local.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## This file is automatically generated by Android Studio.\r\n# Do not modify this file -- YOUR CHANGES WILL BE ERASED!\r\n#\r\n# This file should *NOT* be checked into Version Control Systems,\r\n# as it contains information specific to your local configuration.\r\n#\r\n# Location of the SDK. This is only used by Gradle.\r\n# For customization when using a Version Control System, please read the\r\n# header note.\r\nsdk.dir=/home/nikzad/Android/Sdk
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- local.properties	(revision 2a93cdc4d559921dad0d690363f2bb5311104c4c)
++++ local.properties	(date 1604971071364)
+@@ -1,10 +1,8 @@
+-## This file is automatically generated by Android Studio.
+-# Do not modify this file -- YOUR CHANGES WILL BE ERASED!
+-#
+-# This file should *NOT* be checked into Version Control Systems,
++## This file must *NOT* be checked into Version Control Systems,
+ # as it contains information specific to your local configuration.
+ #
+ # Location of the SDK. This is only used by Gradle.
+ # For customization when using a Version Control System, please read the
+ # header note.
+-sdk.dir=/home/nikzad/Android/Sdk
+\ No newline at end of file
++#Mon Nov 09 20:17:51 EST 2020
++sdk.dir=C\:\\Users\\tungb\\AppData\\Local\\Android\\Sdk
+Index: app/src/main/java/com/example/spotifyar/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    private TextView userWelcome;\r\n    private TextView songView;\r\n    private TextView artistView;\r\n    private Button selectSongBtn;\r\n\r\n    private SongService songService;\r\n    private ArrayList<Song> recentlyPlayedTracks;\r\n    private Song[] librarySongs;\r\n    private ArrayList<TrackItem> libraryTracks;\r\n    private PlayerService playerService;\r\n\r\n    private Song song;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        songService = new SongService(getApplicationContext());\r\n        userWelcome = (TextView) findViewById(R.id.userWelcome);\r\n        songView = (TextView) findViewById(R.id.lastPlayedSong);\r\n        artistView = (TextView) findViewById(R.id.artistView);\r\n        selectSongBtn = (Button) findViewById(R.id.selectSongBtn);\r\n\r\n        SharedPreferences sharedPreferences = getSharedPreferences(\"SPOTIFY\", 0);\r\n        String displayName = sharedPreferences.getString(\"display_name\", \"User\");\r\n        userWelcome.setText(\"Welcome \" + displayName + \"!\");\r\n\r\n        getTracks(); // Updates Song view\r\n\r\n        selectSongBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent intent = new Intent(MainActivity.this, ListActivity.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n\r\n        // Test PlayerService Below\r\n        playerService = new PlayerService(getApplicationContext());\r\n\r\n\r\n    }\r\n\r\n\r\n\r\n    private void getTracks() {\r\n        songService.getRecentlyPlayedTracks(() -> {\r\n            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();\r\n            updateSong();\r\n        });\r\n\r\n        songService.getLibraryTracks(() -> {\r\n           librarySongs = songService.getLibrarySongs();\r\n\r\n           Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();\r\n//           playerService.addSongToPlaybackQueue(librarySongs.get(0));\r\n//           playerService.playQueuedSong();\r\n//            Log.d(\"ListActivity\", libraryTracks.get(0).toString());\r\n\r\n        });\r\n\r\n    }\r\n\r\n    private void updateSong() {\r\n        if (recentlyPlayedTracks.size() > 0) {\r\n            Song mostRecentTrack = recentlyPlayedTracks.get(0);\r\n            String songName = mostRecentTrack.getName();\r\n            String artistName = mostRecentTrack.getFirstArtistName();\r\n            songView.setText(songName);\r\n            artistView.setText(artistName);\r\n            song = recentlyPlayedTracks.get(0);\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/MainActivity.java	(revision 2a93cdc4d559921dad0d690363f2bb5311104c4c)
++++ app/src/main/java/com/example/spotifyar/MainActivity.java	(date 1604971572145)
+@@ -46,6 +46,7 @@
+         userWelcome.setText("Welcome " + displayName + "!");
+ 
+         getTracks(); // Updates Song view
++        Log.v("Started main activity", "Main");
+ 
+         selectSongBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+Index: app/src/main/res/layout/activity_splash.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".SplashActivity\">\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_splash.xml	(revision 2a93cdc4d559921dad0d690363f2bb5311104c4c)
++++ app/src/main/res/layout/activity_splash.xml	(date 1604971802646)
+@@ -4,6 +4,4 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".SplashActivity">
+-
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
++    tools:context=".SplashActivity"/>
+\ No newline at end of file

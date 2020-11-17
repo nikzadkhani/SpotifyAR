@@ -11,4 +11,17 @@
     <string name="let_s_dance">Let\'s Dance!</string>
     <string name="song_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
     <string name="you_have_chosen">Choose a song from your library! You have chosen:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="SearchHint">Search the Library...</string>
+    <string name="Search">Search!</string>
+
+    <string-array name="dropDown">
+        <item>Artist</item>
+        <item>Album</item>
+        <item>Track</item>
+
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

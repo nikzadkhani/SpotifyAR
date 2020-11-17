@@ -1,0 +1,645 @@
+Index: app/src/main/java/com/example/spotifyar/SearchService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\nimport android.util.Log;\r\n\r\nimport com.android.volley.AuthFailureError;\r\nimport com.android.volley.Request;\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.toolbox.JsonObjectRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.gson.Gson;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\npublic class SearchService {\r\n    private static final String ENDPOINT = \"https://api.spotify.com/v1/search\";\r\n    private SharedPreferences sharedPreferences;\r\n    private RequestQueue queue;\r\n\r\n\r\n    private JSONObject songsToPlay = new JSONObject();\r\n\r\n    public SearchService(Context context){\r\n        sharedPreferences = context.getSharedPreferences(\"SPOTIFY\", 0);\r\n        queue = Volley.newRequestQueue(context);\r\n    }\r\n\r\n//    public getSearchResults(String query, String queryType) {\r\n//        String cleanQuery = query.toLowerCase().replace(\" \", \"&20\");\r\n//        String queryEndpoint = ENDPOINT + \"?q=\" + cleanQuery + \"&type=\" + queryType;\r\n//\r\n//        JsonObjectRequest jsonObjectRequest;\r\n//        switch (queryType) {\r\n//            case \"track\":\r\n//                jsonObjectRequest = new JsonObjectRequest(\r\n//                        Request.Method.GET, queryEndpoint, null,\r\n//                        response -> {\r\n//                            Gson gson = new Gson();\r\n//\r\n//\r\n//                        }, error -> {\r\n//                    // TODO: Handle Error\r\n//                });\r\n//            case \"artist\":\r\n//                jsonObjectRequest = new JsonObjectRequest(\r\n//                        Request.Method.GET, queryEndpoint, null,\r\n//                        response -> {\r\n//                            Gson gson = new Gson();\r\n//                            JSONArray jsonArray = response.optJSONObject(\"artists\").optJSONArray(\"items\");\r\n//                            for (int n = 0; n < jsonArray.length(); n++) {\r\n//                                try {\r\n//                                    JSONObject object = jsonArray.getJSONObject(n);\r\n//                                    object = object.optJSONObject(\"track\");\r\n//\r\n//                                    Song song = gson.fromJson(object.toString(), Song.class);\r\n////                            Log.d(\"Inside Song Service\", song.getUri());\r\n//                                    recentlyPlayedSongs.add(song);\r\n//                                } catch (JSONException e) {\r\n//                                    e.printStackTrace();\r\n//                                }\r\n//                            }\r\n//                        }, error -> {\r\n//                    // TODO: Handle Error\r\n//                });\r\n//            case \"album\":\r\n//                jsonObjectRequest = new JsonObjectRequest(\r\n//                        Request.Method.GET, queryEndpoint, null,\r\n//                        response -> {\r\n//                            Gson gson = new Gson();\r\n//\r\n//\r\n//                        }, error -> {\r\n//                    // TODO: Handle Error\r\n//                });\r\n//            default:\r\n//                throw new IllegalArgumentException(\"Invalid queryType in getSearchResults\");\r\n//        }\r\n//    }\r\n//\r\n//    public void playQueuedSong() {\r\n//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, ENDPOINT,\r\n//                songsToPlay, response -> {\r\n//            Log.d(\"Player Service\", response.toString());\r\n//        }, error -> {\r\n//            Log.d(\"Player Service\", error.toString());\r\n//        }) {\r\n//            @Override\r\n//            public Map<String, String> getHeaders() throws AuthFailureError {\r\n//                Map<String, String> headers = new HashMap<>();\r\n//                String token = sharedPreferences.getString(\"token\", \"\");\r\n//                String auth = \"Bearer \" + token;\r\n//                headers.put(\"Authorization\", auth);\r\n//                headers.put(\"Content-Type\", \"application/json\");\r\n//                return headers;\r\n//            }\r\n//        };\r\n//\r\n//        queue.add(jsonObjectRequest);\r\n//    }\r\n\r\n}\r\n
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SearchService.java	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/java/com/example/spotifyar/SearchService.java	(date 1605558881368)
+@@ -10,11 +10,13 @@
+ import com.android.volley.toolbox.JsonObjectRequest;
+ import com.android.volley.toolbox.Volley;
+ import com.google.gson.Gson;
++import com.spotify.protocol.types.Album;
+ 
+ import org.json.JSONArray;
+ import org.json.JSONException;
+ import org.json.JSONObject;
+ 
++import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.Map;
+ 
+@@ -25,83 +27,110 @@
+ 
+ 
+     private JSONObject songsToPlay = new JSONObject();
++    private ArrayList<Song> songArray = new ArrayList<>();
++    private ArrayList<Artist> artistArray = new ArrayList<>();
++    private ArrayList<Album> albumArray = new ArrayList<>();
++
++
+ 
+-    public SearchService(Context context){
++    public SearchService(Context context) {
+         sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
+         queue = Volley.newRequestQueue(context);
+     }
+ 
+-//    public getSearchResults(String query, String queryType) {
+-//        String cleanQuery = query.toLowerCase().replace(" ", "&20");
+-//        String queryEndpoint = ENDPOINT + "?q=" + cleanQuery + "&type=" + queryType;
+-//
+-//        JsonObjectRequest jsonObjectRequest;
+-//        switch (queryType) {
+-//            case "track":
+-//                jsonObjectRequest = new JsonObjectRequest(
+-//                        Request.Method.GET, queryEndpoint, null,
+-//                        response -> {
+-//                            Gson gson = new Gson();
+-//
+-//
+-//                        }, error -> {
+-//                    // TODO: Handle Error
+-//                });
+-//            case "artist":
+-//                jsonObjectRequest = new JsonObjectRequest(
+-//                        Request.Method.GET, queryEndpoint, null,
+-//                        response -> {
+-//                            Gson gson = new Gson();
+-//                            JSONArray jsonArray = response.optJSONObject("artists").optJSONArray("items");
+-//                            for (int n = 0; n < jsonArray.length(); n++) {
+-//                                try {
+-//                                    JSONObject object = jsonArray.getJSONObject(n);
+-//                                    object = object.optJSONObject("track");
+-//
+-//                                    Song song = gson.fromJson(object.toString(), Song.class);
+-////                            Log.d("Inside Song Service", song.getUri());
+-//                                    recentlyPlayedSongs.add(song);
+-//                                } catch (JSONException e) {
+-//                                    e.printStackTrace();
+-//                                }
+-//                            }
+-//                        }, error -> {
+-//                    // TODO: Handle Error
+-//                });
+-//            case "album":
+-//                jsonObjectRequest = new JsonObjectRequest(
+-//                        Request.Method.GET, queryEndpoint, null,
+-//                        response -> {
+-//                            Gson gson = new Gson();
+-//
+-//
+-//                        }, error -> {
+-//                    // TODO: Handle Error
+-//                });
+-//            default:
+-//                throw new IllegalArgumentException("Invalid queryType in getSearchResults");
+-//        }
+-//    }
+-//
+-//    public void playQueuedSong() {
+-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, ENDPOINT,
+-//                songsToPlay, response -> {
+-//            Log.d("Player Service", response.toString());
+-//        }, error -> {
+-//            Log.d("Player Service", error.toString());
+-//        }) {
+-//            @Override
+-//            public Map<String, String> getHeaders() throws AuthFailureError {
+-//                Map<String, String> headers = new HashMap<>();
+-//                String token = sharedPreferences.getString("token", "");
+-//                String auth = "Bearer " + token;
+-//                headers.put("Authorization", auth);
+-//                headers.put("Content-Type", "application/json");
+-//                return headers;
+-//            }
+-//        };
+-//
+-//        queue.add(jsonObjectRequest);
+-//    }
++
++
++
+ 
+-}
++    public ArrayList<Song> getSongArray() {
++        return songArray;
++    }
++
++
++    public ArrayList<Artist> getArtistArray() {
++        return artistArray;
++    }
++
++
++    public ArrayList<Album> getAlbumArray() {
++        return albumArray;
++    }
++
++
++    public void getSearchResults(String query, String queryType, final VolleyCallBack callBack) {
++        String cleanQuery = query.toLowerCase().replace(" ", "&20");
++        String queryEndpoint = ENDPOINT + "?q=" + cleanQuery + "&type=" + queryType;
++
++        JsonObjectRequest jsonObjectRequest;
++        switch (queryType) {
++            case "track":
++                songArray.clear();
++                jsonObjectRequest = new JsonObjectRequest(
++                        Request.Method.GET, queryEndpoint, null,
++                        response -> {
++                            Gson gson = new Gson();
++                            JSONArray jsonArray = response.optJSONObject("tracks").optJSONArray("items");
++                            for (int n = 0; n < jsonArray.length(); n++) {
++                                try {
++                                    JSONObject object = jsonArray.getJSONObject(n);
++                                    Song song = gson.fromJson(object.toString(), Song.class);
++                                    songArray.add(song);
++
++                                } catch (JSONException e) {
++                                    e.printStackTrace();
++                                }
++                            }
++                            callBack.onSuccess();
++                        }, error -> {
++                    // TODO: Handle Error
++                });
++            case "artist":
++                artistArray.clear();
++                jsonObjectRequest = new JsonObjectRequest(
++                        Request.Method.GET, queryEndpoint, null,
++                        response -> {
++                            Gson gson = new Gson();
++                            JSONArray jsonArray = response.optJSONObject("artists").optJSONArray("items");
++                            for (int n = 0; n < jsonArray.length(); n++) {
++                                try {
++                                    JSONObject object = jsonArray.getJSONObject(n);
++                                    Artist artist = gson.fromJson(object.toString(), Artist.class);
++                                    artistArray.add(artist);
++                                } catch (JSONException e) {
++                                    e.printStackTrace();
++                                }
++                            }
++                            callBack.onSuccess();
++                        }, error -> {
++                    // TODO: Handle Error
++                });
++            case "album":
++                albumArray.clear();
++                jsonObjectRequest = new JsonObjectRequest(
++                        Request.Method.GET, queryEndpoint, null,
++                        response -> {
++                            Gson gson = new Gson();
++                            JSONArray jsonArray = response.optJSONObject("albums").optJSONArray("items");
++                            for (int n = 0; n < jsonArray.length(); n++) {
++                                try {
++                                    JSONObject object = jsonArray.getJSONObject(n);
++                                    Album album = gson.fromJson(object.toString(), Album.class);
++                                    albumArray.add(album);
++                                } catch (JSONException e) {
++                                    e.printStackTrace();
++                                }
++                            }
++                            callBack.onSuccess();
++                        }, error -> {
++                    // TODO: Handle Error
++                });
++            default:
++                jsonObjectRequest = null;
++        }
++
++        if (jsonObjectRequest == null)
++            throw new IllegalArgumentException("Invalid queryType in getSearchResults");
++
++        queue.add(jsonObjectRequest);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_splash.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".SplashActivity\">\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_splash.xml	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/res/layout/activity_splash.xml	(date 1605378167317)
+@@ -4,6 +4,4 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".SplashActivity">
+-
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
++    tools:context=".SplashActivity"/>
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/SearchResultListFragment.java
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SearchResultListFragment.java	(date 1605575898022)
++++ app/src/main/java/com/example/spotifyar/SearchResultListFragment.java	(date 1605575898022)
+@@ -0,0 +1,99 @@
++package com.example.spotifyar;
++
++import android.content.Context;
++import android.os.Bundle;
++
++import androidx.annotation.NonNull;
++import androidx.fragment.app.Fragment;
++import androidx.recyclerview.widget.GridLayoutManager;
++import androidx.recyclerview.widget.LinearLayoutManager;
++import androidx.recyclerview.widget.RecyclerView;
++
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++
++
++/**
++ * A fragment representing a list of Items.
++ */
++public class SearchResultListFragment extends Fragment {
++
++    private static final String ARG_COLUMN_COUNT = "column-count";
++    private int mColumnCount = 1;
++
++    private SongService songService;
++    private TrackItem[] tracks;
++
++    private RecyclerView recyclerView;
++
++    /**
++     * Mandatory empty constructor for the fragment manager to instantiate the
++     * fragment (e.g. upon screen orientation changes).
++     */
++    public SearchResultListFragment() {
++    }
++
++    // TODO: Customize parameter initialization
++    @SuppressWarnings("unused")
++    public static SearchResultListFragment newInstance(int columnCount) {
++        SearchResultListFragment fragment = new SearchResultListFragment();
++        Bundle args = new Bundle();
++        args.putInt(ARG_COLUMN_COUNT, columnCount);
++        fragment.setArguments(args);
++        return fragment;
++    }
++
++    @Override
++    public void onAttach(@NonNull Context context) {
++        super.onAttach(context);
++        songService = new SongService(context);
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        if (getArguments() != null) {
++            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
++        }
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        View view = inflater.inflate(R.layout.track_item_list, container, false);
++
++
++        // Set the adapter
++        if (view instanceof RecyclerView) {
++            Context context = view.getContext();
++            recyclerView = (RecyclerView) view;
++            if (mColumnCount <= 1) {
++                recyclerView.setLayoutManager(new LinearLayoutManager(context));
++            } else {
++                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
++            }
++        }
++        return view;
++    }
++
++        public TrackItem getTrackAtIndex ( int index){
++            return tracks[index];
++        }
++
++        //Make 3 different adapts
++        public void updateTrackAdapter (ArrayList<Song> adapterContent) {
++            tracks = new TrackItem[adapterContent.size()];
++            for (int i = 0; i < adapterContent.size() ; i++) {
++                tracks[i] = new TrackItem(adapterContent.get(i));
++            }
++
++            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tracks)));;
++        }
++
++
++}
+\ No newline at end of file
+Index: local.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## This file is automatically generated by Android Studio.\r\n# Do not modify this file -- YOUR CHANGES WILL BE ERASED!\r\n#\r\n# This file should *NOT* be checked into Version Control Systems,\r\n# as it contains information specific to your local configuration.\r\n#\r\n# Location of the SDK. This is only used by Gradle.\r\n# For customization when using a Version Control System, please read the\r\n# header note.\r\nsdk.dir=/home/nikzad/Android/Sdk
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- local.properties	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ local.properties	(date 1605380965602)
+@@ -1,10 +1,8 @@
+-## This file is automatically generated by Android Studio.
+-# Do not modify this file -- YOUR CHANGES WILL BE ERASED!
+-#
+-# This file should *NOT* be checked into Version Control Systems,
++## This file must *NOT* be checked into Version Control Systems,
+ # as it contains information specific to your local configuration.
+ #
+ # Location of the SDK. This is only used by Gradle.
+ # For customization when using a Version Control System, please read the
+ # header note.
+-sdk.dir=/home/nikzad/Android/Sdk
+\ No newline at end of file
++#Mon Nov 09 20:17:51 EST 2020
++sdk.dir=C\:\\Users\\tungb\\AppData\\Local\\Android\\Sdk
+Index: app/src/main/res/layout/fragment_search_result.xml
+===================================================================
+--- app/src/main/res/layout/fragment_search_result.xml	(date 1605566545241)
++++ app/src/main/res/layout/fragment_search_result.xml	(date 1605566545241)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    android:orientation="horizontal">
++
++    <TextView
++        android:id="@+id/item_number"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_margin="@dimen/text_margin"
++        android:textAppearance="?attr/textAppearanceListItem" />
++
++    <TextView
++        android:id="@+id/content"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_margin="@dimen/text_margin"
++        android:textAppearance="?attr/textAppearanceListItem" />
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_search_result_list.xml
+===================================================================
+--- app/src/main/res/layout/fragment_search_result_list.xml	(date 1605573923106)
++++ app/src/main/res/layout/fragment_search_result_list.xml	(date 1605573923106)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/list"
++    android:name="com.example.spotifyar.SearchResultFragment"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:layout_marginLeft="16dp"
++    android:layout_marginRight="16dp"
++    app:layoutManager="LinearLayoutManager"
++    tools:context=".SearchResultListFragment"
++    tools:listitem="@layout/fragment_search_result" />
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/dummy/DummyContent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/dummy/DummyContent.java	(date 1605566545125)
++++ app/src/main/java/com/example/spotifyar/dummy/DummyContent.java	(date 1605566545125)
+@@ -0,0 +1,72 @@
++package com.example.spotifyar.dummy;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++/**
++ * Helper class for providing sample content for user interfaces created by
++ * Android template wizards.
++ * <p>
++ * TODO: Replace all uses of this class before publishing your app.
++ */
++public class DummyContent {
++
++    /**
++     * An array of sample (dummy) items.
++     */
++    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
++
++    /**
++     * A map of sample (dummy) items, by ID.
++     */
++    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
++
++    private static final int COUNT = 25;
++
++    static {
++        // Add some sample items.
++        for (int i = 1; i <= COUNT; i++) {
++            addItem(createDummyItem(i));
++        }
++    }
++
++    private static void addItem(DummyItem item) {
++        ITEMS.add(item);
++        ITEM_MAP.put(item.id, item);
++    }
++
++    private static DummyItem createDummyItem(int position) {
++        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
++    }
++
++    private static String makeDetails(int position) {
++        StringBuilder builder = new StringBuilder();
++        builder.append("Details about Item: ").append(position);
++        for (int i = 0; i < position; i++) {
++            builder.append("\nMore details information here.");
++        }
++        return builder.toString();
++    }
++
++    /**
++     * A dummy item representing a piece of content.
++     */
++    public static class DummyItem {
++        public final String id;
++        public final String content;
++        public final String details;
++
++        public DummyItem(String id, String content, String details) {
++            this.id = id;
++            this.content = content;
++            this.details = details;
++        }
++
++        @Override
++        public String toString() {
++            return content;
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/MySearchResultRecyclerViewAdapter.java
+===================================================================
+--- app/src/main/java/com/example/spotifyar/MySearchResultRecyclerViewAdapter.java	(date 1605575525677)
++++ app/src/main/java/com/example/spotifyar/MySearchResultRecyclerViewAdapter.java	(date 1605575525677)
+@@ -0,0 +1,86 @@
++package com.example.spotifyar;
++
++import androidx.annotation.NonNull;
++import androidx.recyclerview.widget.RecyclerView;
++
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.TextView;
++import android.widget.Toast;
++
++import java.util.List;
++
++/**
++ * {@link RecyclerView.Adapter} that can display a {@link TrackItem}.
++ */
++public class MySearchResultRecyclerViewAdapter extends RecyclerView.Adapter<MySearchResultRecyclerViewAdapter.ViewHolder> {
++
++    private final List<TrackItem> tracks;
++
++    public MySearchResultRecyclerViewAdapter(List<TrackItem> tracks) {
++        this.tracks = tracks;
++    }
++
++    @Override
++    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
++        View view = LayoutInflater.from(parent.getContext())
++                .inflate(R.layout.track_item, parent, false);
++        Log.v("Recycler Adapter", String.valueOf(viewType));
++        return new ViewHolder(view);
++    }
++
++    @Override
++    public void onBindViewHolder(final ViewHolder holder, int position) {
++
++        holder.track = this.tracks.get(position);
++        holder.idView.setText(String.valueOf(position));
++        holder.trackTitleView.setText(this.tracks.get(position).name);
++        holder.trackArtistView.setText(this.tracks.get(position).artist);
++
++    }
++
++    @Override
++    public int getItemCount() {
++        return this.tracks.size();
++    }
++
++    public class ViewHolder extends RecyclerView.ViewHolder {
++        public final TextView idView;
++        public final TextView trackTitleView;
++        public final TextView trackArtistView;
++        public final TextView confirmSongView;
++        public TrackItem track;
++
++        public ViewHolder(View view) {
++            super(view);
++            // widgetname = itemView.findViewById(R.id.fragmentwidgetid);
++            idView = (TextView) view.findViewById(R.id.itemNumber);
++            trackTitleView = (TextView) view.findViewById(R.id.trackTitle);
++            trackArtistView = (TextView) view.findViewById(R.id.trackArtist);
++            confirmSongView = (TextView) view.findViewById(R.id.confirmSongView);
++
++            view.setOnClickListener(new View.OnClickListener(){
++                @Override
++                public void onClick(View v) {
++                    int trackIndex = Integer.parseInt(idView.getText().toString());
++                    String trackName = trackTitleView.getText().toString();
++                    String trackArtist = trackArtistView.getText().toString();
++                    String s = trackIndex+".\t"+trackName+" by "+trackArtist;
++                    confirmSongView.setText(s);
++                }
++            });
++        }
++
++        @Override
++        public String toString() {
++            return "ViewHolder{" +
++                    "idView=" + idView.getText() +
++                    ", trackTitleView=" + trackTitleView.getText() +
++                    ", trackArtistView=" + trackArtistView.getText() +
++                    ", track=" + track.toString() +
++                    '}';
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/spotifyar/PlayerService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\nimport android.util.Log;\r\n\r\nimport com.android.volley.AuthFailureError;\r\nimport com.android.volley.Request;\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.toolbox.JsonObjectRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.gson.Gson;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\n/**\r\n * Service to play selected songs.\r\n */\r\npublic class PlayerService {\r\n    private static final String ENDPOINT = \"https://api.spotify.com/v1/me/player/play\";\r\n    private SharedPreferences sharedPreferences;\r\n    private RequestQueue queue;\r\n\r\n\r\n    private JSONObject songsToPlay = new JSONObject();\r\n\r\n    public PlayerService(Context context){\r\n        sharedPreferences = context.getSharedPreferences(\"SPOTIFY\", 0);\r\n        queue = Volley.newRequestQueue(context);\r\n    }\r\n\r\n    public void addSongToPlaybackQueue(Song song){\r\n        JSONArray uriArray = new JSONArray();\r\n        uriArray.put(song.getUri());\r\n        try {\r\n            songsToPlay.put(\"uris\", uriArray);\r\n        } catch (JSONException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public void playQueuedSong() {\r\n        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, ENDPOINT,\r\n                songsToPlay, response -> {\r\n                    Log.d(\"Player Service\", response.toString());\r\n                }, error -> {\r\n                    Log.d(\"Player Service\", error.toString());\r\n                }) {\r\n            @Override\r\n            public Map<String, String> getHeaders() throws AuthFailureError {\r\n                Map<String, String> headers = new HashMap<>();\r\n                String token = sharedPreferences.getString(\"token\", \"\");\r\n                String auth = \"Bearer \" + token;\r\n                headers.put(\"Authorization\", auth);\r\n                headers.put(\"Content-Type\", \"application/json\");\r\n                return headers;\r\n            }\r\n        };\r\n\r\n        queue.add(jsonObjectRequest);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/PlayerService.java	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/java/com/example/spotifyar/PlayerService.java	(date 1605379328643)
+@@ -31,7 +31,7 @@
+     private JSONObject songsToPlay = new JSONObject();
+ 
+     public PlayerService(Context context){
+-        sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
++        sharedPreferences = context.getSharedPreferences("PANCAKE", 0);
+         queue = Volley.newRequestQueue(context);
+     }
+ 
+Index: app/src/main/java/com/example/spotifyar/SongService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.spotifyar;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\nimport android.util.Log;\r\n\r\nimport com.android.volley.AuthFailureError;\r\nimport com.android.volley.Request;\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.toolbox.JsonObjectRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.gson.Gson;\r\n\r\nimport org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.HashSet;\r\nimport java.util.Map;\r\n\r\npublic class SongService {\r\n    private ArrayList<Song> recentlyPlayedSongs = new ArrayList<>();\r\n    private Song[] librarySongs = new Song[20];\r\n    private SharedPreferences sharedPreferences;\r\n    private RequestQueue queue;\r\n\r\n    public SongService(Context context) {\r\n        sharedPreferences = context.getSharedPreferences(\"SPOTIFY\", 0);\r\n        queue = Volley.newRequestQueue(context);\r\n    }\r\n\r\n    public ArrayList<Song> getRecentlyPlayedSongs() {\r\n        return recentlyPlayedSongs;\r\n    }\r\n\r\n    public Song[] getLibrarySongs() {return librarySongs; }\r\n\r\n    public ArrayList<Song> getRecentlyPlayedTracks(final VolleyCallBack callBack) {\r\n        String endpoint = \"https://api.spotify.com/v1/me/player/recently-played\";\r\n        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest\r\n                (Request.Method.GET, endpoint, null, response -> {\r\n                    Gson gson = new Gson();\r\n                    JSONArray jsonArray = response.optJSONArray(\"items\");\r\n                    for (int n = 0; n < jsonArray.length(); n++) {\r\n                        try {\r\n                            JSONObject object = jsonArray.getJSONObject(n);\r\n                            object = object.optJSONObject(\"track\");\r\n\r\n                            Song song = gson.fromJson(object.toString(), Song.class);\r\n//                            Log.d(\"Inside Song Service\", song.getUri());\r\n                            recentlyPlayedSongs.add(song);\r\n                        } catch (JSONException e) {\r\n                            e.printStackTrace();\r\n                        }\r\n                    }\r\n                    callBack.onSuccess();\r\n                }, error -> {\r\n                    // TODO: Handle error\r\n\r\n                }) {\r\n            @Override\r\n            public Map<String, String> getHeaders() throws AuthFailureError {\r\n                Map<String, String> headers = new HashMap<>();\r\n                String token = sharedPreferences.getString(\"token\", \"\");\r\n                String auth = \"Bearer \" + token;\r\n                headers.put(\"Authorization\", auth);\r\n                return headers;\r\n            }\r\n        };\r\n        queue.add(jsonObjectRequest);\r\n        return recentlyPlayedSongs;\r\n    }\r\n\r\n    public Song[] getLibraryTracks(final VolleyCallBack callBack) {\r\n        String endpoint = \"https://api.spotify.com/v1/me/tracks\";\r\n        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest\r\n                (Request.Method.GET, endpoint, null, response -> {\r\n                    Gson gson = new Gson();\r\n                    JSONArray jsonArray = response.optJSONArray(\"items\");\r\n                    for (int n = 0; n < jsonArray.length(); n++) {\r\n                        try {\r\n                            JSONObject object = jsonArray.getJSONObject(n);\r\n                            object = object.optJSONObject(\"track\");\r\n                            Song song = gson.fromJson(object.toString(), Song.class);\r\n                            librarySongs[n] = song;\r\n                        } catch (JSONException e) {\r\n                            e.printStackTrace();\r\n                        }\r\n                    }\r\n                    callBack.onSuccess();\r\n                }, error -> {\r\n                    // TODO: Handle error\r\n\r\n                }) {\r\n            @Override\r\n            public Map<String, String> getHeaders() throws AuthFailureError {\r\n                Map<String, String> headers = new HashMap<>();\r\n                String token = sharedPreferences.getString(\"token\", \"\");\r\n                String auth = \"Bearer \" + token;\r\n                headers.put(\"Authorization\", auth);\r\n                return headers;\r\n            }\r\n        };\r\n        queue.add(jsonObjectRequest);\r\n        return librarySongs;\r\n    }\r\n\r\n\r\n\r\n\r\n    public void addSongToLibrary(Song song) {\r\n        JSONObject payload = preparePutPayload(song);\r\n        JsonObjectRequest jsonObjectRequest = prepareSongLibraryRequest(payload);\r\n        queue.add(jsonObjectRequest);\r\n    }\r\n\r\n    private JsonObjectRequest prepareSongLibraryRequest(JSONObject payload) {\r\n        return new JsonObjectRequest(Request.Method.PUT, \"https://api.spotify.com/v1/me/tracks\", payload, response -> {\r\n        }, error -> {\r\n        }) {\r\n            @Override\r\n            public Map<String, String> getHeaders() throws AuthFailureError {\r\n                Map<String, String> headers = new HashMap<>();\r\n                String token = sharedPreferences.getString(\"token\", \"\");\r\n                String auth = \"Bearer \" + token;\r\n                headers.put(\"Authorization\", auth);\r\n                headers.put(\"Content-Type\", \"application/json\");\r\n                return headers;\r\n            }\r\n        };\r\n    }\r\n\r\n    private JSONObject preparePutPayload(Song song) {\r\n        JSONArray idarray = new JSONArray();\r\n        idarray.put(song.getId());\r\n        JSONObject ids = new JSONObject();\r\n        try {\r\n            ids.put(\"ids\", idarray);\r\n        } catch (JSONException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return ids;\r\n    }\r\n}\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/spotifyar/SongService.java	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/java/com/example/spotifyar/SongService.java	(date 1605379360526)
+@@ -27,7 +27,7 @@
+     private RequestQueue queue;
+ 
+     public SongService(Context context) {
+-        sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
++        sharedPreferences = context.getSharedPreferences("PANCAKE", 0);
+         queue = Volley.newRequestQueue(context);
+     }
+ 
+@@ -65,6 +65,7 @@
+                 Map<String, String> headers = new HashMap<>();
+                 String token = sharedPreferences.getString("token", "");
+                 String auth = "Bearer " + token;
++                Log.v("Auth", auth);
+                 headers.put("Authorization", auth);
+                 return headers;
+             }
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">SpotifyAR</string>\r\n    <string name=\"last_played_song\">You last played a song called </string>\r\n    <string name=\"song\">Song</string>\r\n    <string name=\"by\">by</string>\r\n    <string name=\"artist\">Artist</string>\r\n    <string name=\"welcome_user\">Welcome User!</string>\r\n    <string name=\"select_a_song\">SELECT A SONG</string>\r\n    <string name=\"ar_available_default\">AR is (not) available on this device.</string>\r\n    <string name=\"start_ar\">START AR</string>\r\n    <string name=\"let_s_dance\">Let\\'s Dance!</string>\r\n    <string name=\"song_by_artist\"><![CDATA[<#>. <Song> by <artist>]]></string>\r\n    <string name=\"you_have_chosen\">Choose a song from your library! You have chosen:</string>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision ffb17b37577d4e59b41ab20ddc4ba473205ff057)
++++ app/src/main/res/values/strings.xml	(date 1605502151873)
+@@ -11,4 +11,17 @@
+     <string name="let_s_dance">Let\'s Dance!</string>
+     <string name="song_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
+     <string name="you_have_chosen">Choose a song from your library! You have chosen:</string>
++    <!-- TODO: Remove or change this placeholder text -->
++    <string name="SearchHint">Search the Library...</string>
++    <string name="Search">Search!</string>
++
++    <string-array name="dropDown">
++        <item>Artist</item>
++        <item>Album</item>
++        <item>Track</item>
++
++    </string-array>
++    <!-- TODO: Remove or change this placeholder text -->
++    <string name="hello_blank_fragment">Hello blank fragment</string>
++
+ </resources>
+\ No newline at end of file

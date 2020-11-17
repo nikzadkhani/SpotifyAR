@@ -39,10 +39,11 @@ public class SplashActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
 
-
+        Log.v("test","inSplashBeforeAuthentication");
         authenticateSpotify();
 
-        sharedPreferences = this.getSharedPreferences("SPOTIFY", 0);
+
+        sharedPreferences = this.getSharedPreferences("PANCAKE", 0);
         queue = Volley.newRequestQueue(this);
     }
 
@@ -52,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         userService.get(() -> {
             User user = userService.getUser();
             Log.d("service_user_name", String.valueOf(user.getId()));
-            editor = getSharedPreferences("SPOTIFY", 0).edit();
+            editor = getSharedPreferences("PANCAKE", 0).edit();
             editor.putString("userid", user.getId());
             editor.putString("display_name", user.getDisplay_name());
             Log.d("STARTING", "GOT USER INFORMATION");
@@ -75,12 +76,19 @@ public class SplashActivity extends AppCompatActivity {
         builder.setScopes(SCOPES);
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
+        Log.v("test","inSplashAuthenticationScreen");
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        Log.v("test","inSplashAfterAuthentication");
 
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
@@ -89,7 +97,7 @@ public class SplashActivity extends AppCompatActivity {
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
-                    editor = getSharedPreferences("SPOTIFY", 0).edit();
+                    editor = getSharedPreferences("PANCAKE", 0).edit();
                     editor.putString("token", response.getAccessToken());
                     Log.d("STARTING", "GOT AUTH TOKEN");
                     editor.apply();
@@ -104,6 +112,7 @@ public class SplashActivity extends AppCompatActivity {
                 // Most likely auth flow was cancelled
                 default:
                     // Handle other cases
+                    Log.v("resp", String.valueOf(response));
             }
         }
     }

@@ -30,7 +30,7 @@ public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecy
         Log.v("Recycler Adapter", String.valueOf(viewType));
         return new ViewHolder(view);
     }
-
+        
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 

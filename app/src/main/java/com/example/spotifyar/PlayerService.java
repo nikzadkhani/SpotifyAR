@@ -31,7 +31,7 @@ public class PlayerService {
     private JSONObject songsToPlay = new JSONObject();
 
     public PlayerService(Context context){
-        sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
+        sharedPreferences = context.getSharedPreferences("PANCAKE", 0);
         queue = Volley.newRequestQueue(context);
     }
 
