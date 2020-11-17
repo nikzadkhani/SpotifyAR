@@ -1,23 +1,66 @@
 package com.example.spotifyar;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.util.Log;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class ListActivity extends AppCompatActivity {
-    List<TrackItem> tracks;
+public class ListActivity extends AppCompatActivity implements TrackFragmentListener {
+    private Button danceBtn;
+    private TextView songConfirmView;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-//        Bundle bundle = getIntent().getExtras();
-//        tracks = (ArrayList<TrackItem>) bundle.get("libraryTracks");
+
+        TrackFragment trackFragment = (TrackFragment) getSupportFragmentManager().findFragmentById(R.id.trackFragment);
+
+        danceBtn = (Button) findViewById(R.id.startArBtn);
+        songConfirmView = (TextView) findViewById(R.id.confirmSongView);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavMenuLibrary);
+
+        songConfirmView.setText("");
+
+        PlayerService playerService = new PlayerService(ListActivity.this);
+        danceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TrackItem currentTrack = trackFragment.getCurrentSelectedTrack();
+                playerService.addSongToPlaybackQueue(currentTrack);
+                playerService.playQueuedSong();
+                Intent intent = new Intent(ListActivity.this, ARActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.search:
+                                Intent intent = new Intent(ListActivity.this, SearchActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+                        return true;
+                    }
+                });
     }
 
+    @Override
+    public void setSongViewText(TrackItem track) {
+//        Toast.makeText(this, "Hi", Toast.LENGTH_LONG).show();
+        songConfirmView.setText(track.name + " by " + track.artist);
+//        songConfirmView.setText(track);
+    }
 }

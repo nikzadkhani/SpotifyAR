@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.spotifyar.dummy.DummyContent;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,12 +22,19 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class TrackFragment extends Fragment {
+public class TrackFragment extends Fragment implements OnItemClickListener {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
     private SongService songService;
+    private TrackItem[] tracks;
+    
+    private RecyclerView recyclerView;
+    
+    private int currentSelectedTrackIndex;
+
+    private TrackFragmentListener TFL;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,6 +57,7 @@ public class TrackFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         songService = new SongService(context);
+        TFL = (TrackFragmentListener) context;
     }
 
     @Override
@@ -64,38 +70,42 @@ public class TrackFragment extends Fragment {
     }
 
     @Override
+    public void onTrackItemClicked(int position) {
+        this.currentSelectedTrackIndex = position;
+        TFL.setSongViewText(tracks[position]);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.track_item_list, container, false);
+//        TFL.setSongViewText("yellow");
 
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-//            ArrayList<TrackItem> libraryTracks = (ArrayList<TrackItem>) LACFL.getLibraryTracks();
-//            Log.d("Track Fragment", libraryTracks.get(0).toString());
-            Artist[] artists = new Artist[] {new Artist("artist", "",new String[]{""})};
-            Song song = new Song("h", "song name", artists ,"");
-            TrackItem trackItem = new TrackItem(song);
 
             songService.getLibraryTracks(() -> {
                 Song[] songs = songService.getLibrarySongs();
-                TrackItem[] tempTracks = new TrackItem[songs.length];
+                tracks = new TrackItem[songs.length];
                 for (int i = 0; i < songs.length; i++) {
-                    tempTracks[i] = new TrackItem(songs[i]);
+                    tracks[i] = new TrackItem(songs[i]);
                 }
-                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(Arrays.asList(tempTracks)));
+                recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(context, Arrays.asList(tracks), this));
+                recyclerView.setHasFixedSize(true);
             });
-
-
-
         }
         return view;
+    }
+    
+    public TrackItem  getCurrentSelectedTrack() {
+        return tracks[this.currentSelectedTrackIndex];
     }
 }

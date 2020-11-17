@@ -6,4 +6,21 @@
     <string name="artist">Artist</string>
     <string name="welcome_user">Welcome User!</string>
     <string name="select_a_song">SELECT A SONG</string>
+    <string name="ar_available_default">AR is (not) available on this device.</string>
+    <string name="start_ar">START AR</string>
+    <string name="let_s_dance">Let\'s Dance!</string>
+    <string name="song_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
+    <string name="you_have_chosen">Choose a song from your library! You have chosen:</string>
+    <string name="icon2">Search</string>
+    <string name="icon1">Library</string>
+    <string name="SearchHint">Search the Library...</string>
+    <string name="Search">Search!</string>
+
+    <string-array name="dropDown">
+        <item>Artist</item>
+        <item>Album</item>
+        <item>Track</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

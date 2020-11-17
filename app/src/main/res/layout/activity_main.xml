@@ -5,7 +5,6 @@
     android:id="@+id/ConstrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#252225"
     tools:context=".MainActivity">
 
     <TextView
@@ -13,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/by"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_user"
-        android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +38,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/song"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,14 +45,13 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.339" />
+        app:layout_constraintVertical_bias="0.32999998" />
 
     <TextView
         android:id="@+id/txtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/last_played_song"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/lastPlayedSong"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +64,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/artist"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,14 +75,11 @@
 
     <Button
         android:id="@+id/selectSongBtn"
-        android:layout_width="138dp"
-        android:layout_height="46dp"
-        android:background="#2196F3"
+        android:layout_width="154dp"
+        android:layout_height="74dp"
         android:fadingEdge="horizontal|vertical"
         android:fadingEdgeLength="10sp"
-        android:shadowColor="#FFFFFF"
         android:text="@string/select_a_song"
-        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,4 +87,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/artistView"
         app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/arAvailabilityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ar_available_default"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/selectSongBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artistView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
