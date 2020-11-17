@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.animation.TimeInterpolator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,51 +43,57 @@ public class ARActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_r);
 
+        Intent intent = getIntent();
+        TrackItem selectedTrack = (TrackItem) intent.getExtras().getSerializable("selectedTrack");
+
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
+        PlayerService playerService = new PlayerService(ARActivity.this);
+        playerService.addSongToPlaybackQueue(selectedTrack);
 
 
-//        ModelRenderable.builder()
-//                .setSource(this, R.raw.andy_dance)
-//                .build()
-//                .thenAccept(renderable -> andyRenderable = renderable)
-//                .exceptionally(
-//                        throwable -> {
-//                            Toast toast =
-//                                    Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-//                            toast.setGravity(Gravity.CENTER, 0, 0);
-//                            toast.show();
-//                            Log.e(TAG, "Failed to load my boi",throwable);
-//                            return null;
-//                        });
-//
-//
-//
-////        andyAnimator.setInterpolator(new )
-//
-//        arFragment.setOnTapArPlaneListener(
-//                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-//                    if (andyRenderable == null) {
-//                        return;
-//                    }
-//
-//                    // Create the Anchor.
-//                    Anchor anchor = hitResult.createAnchor();
-//                    AnchorNode anchorNode = new AnchorNode(anchor);
-//                    anchorNode.setParent(arFragment.getArSceneView().getScene());
-//
-//                    // Create the transformable andy and add it to the anchor.
-//                    TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
-//                    andy.setParent(anchorNode);
-//                    andy.setRenderable(andyRenderable);
-//                    andy.select();
-//
-//                    // Get the animation data called "andy_dance" from the `andyRenderable`.
-//                    AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
-//                    ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
-//
-//                    andyAnimator.start();
-//                    Toast.makeText(this, String.valueOf(andyAnimator.isStarted()), Toast.LENGTH_SHORT).show();
-//                });
+        ModelRenderable.builder()
+                .setSource(this, R.raw.andy_dance)
+                .build()
+                .thenAccept(renderable -> andyRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast =
+                                    Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            Log.e(TAG, "Failed to load my boi",throwable);
+                            return null;
+                        });
+
+
+
+//        andyAnimator.setInterpolator(new )
+        // Get the animation data called "andy_dance" from the `andyRenderable`.
+        AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
+        ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
+
+        arFragment.setOnTapArPlaneListener(
+                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                    if (andyRenderable == null) {
+                        return;
+                    }
+
+                    // Create the Anchor.
+                    Anchor anchor = hitResult.createAnchor();
+                    AnchorNode anchorNode = new AnchorNode(anchor);
+                    anchorNode.setParent(arFragment.getArSceneView().getScene());
+
+                    // Create the transformable andy and add it to the anchor.
+                    TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
+                    andy.setParent(anchorNode);
+                    andy.setRenderable(andyRenderable);
+                    andy.select();
+
+                    if (!andyAnimator.isStarted()) {
+                        playerService.playQueuedSong();
+                        andyAnimator.start();
+                    }
+                });
 
 
 

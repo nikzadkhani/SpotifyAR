@@ -37,6 +37,8 @@ public class SearchActivity extends AppCompatActivity implements SearchBarFragme
         danceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ARActivity.class);
+                startActivity(intent);
             }
         });
 

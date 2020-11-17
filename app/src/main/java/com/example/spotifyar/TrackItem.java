@@ -1,9 +1,11 @@
 package com.example.spotifyar;
 
+import java.io.Serializable;
+
 /**
  * Track Item for List View
  */
-public class TrackItem {
+public class TrackItem implements Serializable {
     public final String artist;
     public final String name;
     public final String id;

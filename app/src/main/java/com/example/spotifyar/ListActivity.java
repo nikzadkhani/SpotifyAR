@@ -30,14 +30,13 @@ public class ListActivity extends AppCompatActivity implements TrackFragmentList
 
         songConfirmView.setText("");
 
-        PlayerService playerService = new PlayerService(ListActivity.this);
+
         danceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TrackItem currentTrack = trackFragment.getCurrentSelectedTrack();
-                playerService.addSongToPlaybackQueue(currentTrack);
-                playerService.playQueuedSong();
                 Intent intent = new Intent(ListActivity.this, ARActivity.class);
+                intent.putExtra("selectedTrack", currentTrack);
                 startActivity(intent);
             }
         });
