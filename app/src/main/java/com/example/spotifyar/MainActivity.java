@@ -1,20 +1,26 @@
-package com.example.spotifyar;
+/**
+ * MainActivity.java - Opened after SplashActivity Auth. Serves as a homepage to ensure
+ * Spotify API is working. Adds a TextView displaying if AR is available for the user's device.
+ * Greets user then provides a button called select a track to the next activity
+ * com.example.spotify.ar.ListActivity
+ */
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.spotifyar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.spotifyar.services.PlayerService;
+import com.example.spotifyar.services.TrackService;
 import com.google.ar.core.ArCoreApk;
+import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 
@@ -23,38 +29,37 @@ public class MainActivity extends AppCompatActivity {
     private final String AR_UNAVAILABLE = "AR is unavailable on this device";
 
     private TextView userWelcome;
-    private TextView songView;
+    private TextView trackView;
     private TextView artistView;
     private TextView arAvailabilityView;
-    private Button selectSongBtn;
+    private Button selectTrackBtn;
 
-    private SongService songService;
-    private ArrayList<Song> recentlyPlayedTracks;
-    private Song[] librarySongs;
-    private ArrayList<TrackItem> libraryTracks;
+    private TrackService trackService;
+    private ArrayList<Track> recentlyPlayedTracks;
+    private Track[] libraryTracks;
     private PlayerService playerService;
 
-    private Song song;
+    private Track track;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        songService = new SongService(getApplicationContext());
+        trackService = new TrackService(getApplicationContext());
         userWelcome = (TextView) findViewById(R.id.userWelcome);
-        songView = (TextView) findViewById(R.id.lastPlayedSong);
+        trackView = (TextView) findViewById(R.id.lastPlayedTrack);
         artistView = (TextView) findViewById(R.id.artistView);
         arAvailabilityView = (TextView) findViewById(R.id.arAvailabilityView);
-        selectSongBtn = (Button) findViewById(R.id.selectSongBtn);
+        selectTrackBtn = (Button) findViewById(R.id.selectTrackBtn);
 
         SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
         String displayName = sharedPreferences.getString("display_name", "User");
         userWelcome.setText("Welcome " + displayName + "!");
 
-        getTracks(); // Updates Song view
+        getTracks(); // Updates Track view
 
-        selectSongBtn.setOnClickListener(new View.OnClickListener() {
+        selectTrackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
@@ -94,31 +99,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTracks() {
-        songService.getRecentlyPlayedTracks(() -> {
-            recentlyPlayedTracks = songService.getRecentlyPlayedSongs();
-            updateSong();
+        trackService.getRecentlyPlayedTracks(() -> {
+            recentlyPlayedTracks = trackService.getRecentlyPlayedTracks();
+            updateTrack();
         });
-
-        songService.getLibraryTracks(() -> {
-           librarySongs = songService.getLibrarySongs();
-
-//           Toast.makeText(getApplicationContext(), librarySongs[0].getName(), Toast.LENGTH_LONG).show();
-//           playerService.addSongToPlaybackQueue(librarySongs.get(0));
-//           playerService.playQueuedSong();
-//            Log.d("ListActivity", libraryTracks.get(0).toString());
-
-        });
-
     }
 
-    private void updateSong() {
+    private void updateTrack() {
         if (recentlyPlayedTracks.size() > 0) {
-            Song mostRecentTrack = recentlyPlayedTracks.get(0);
-            String songName = mostRecentTrack.getName();
-            String artistName = mostRecentTrack.getFirstArtistName();
-            songView.setText(songName);
+            Track mostRecentTrack = recentlyPlayedTracks.get(0);
+            String trackName = mostRecentTrack.name;
+            String artistName = mostRecentTrack.artists.get(0).name;
+            trackView.setText(trackName);
             artistView.setText(artistName);
-            song = recentlyPlayedTracks.get(0);
+            track = recentlyPlayedTracks.get(0);
         }
     }
 }

@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastPlayedSong"
+        app:layout_constraintTop_toBottomOf="@+id/lastPlayedTrack"
         app:layout_constraintVertical_bias="0.060000002" />
 
     <TextView
@@ -33,11 +33,11 @@
         app:layout_constraintVertical_bias="0.111" />
 
     <TextView
-        android:id="@+id/lastPlayedSong"
+        android:id="@+id/lastPlayedTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/song"
+        android:text="@string/track"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,9 +51,9 @@
         android:id="@+id/txtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/last_played_song"
+        android:text="@string/last_played_track"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/lastPlayedSong"
+        app:layout_constraintBottom_toTopOf="@+id/lastPlayedTrack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userWelcome"
@@ -74,12 +74,12 @@
         app:layout_constraintVertical_bias="0.07999998" />
 
     <Button
-        android:id="@+id/selectSongBtn"
+        android:id="@+id/selectTrackBtn"
         android:layout_width="154dp"
         android:layout_height="74dp"
         android:fadingEdge="horizontal|vertical"
         android:fadingEdgeLength="10sp"
-        android:text="@string/select_a_song"
+        android:text="@string/select_a_track"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ar_available_default"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/selectSongBtn"
+        app:layout_constraintBottom_toTopOf="@+id/selectTrackBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/artistView" />

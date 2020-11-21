@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">SpotifyAR</string>
-    <string name="last_played_song">You last played a song called </string>
-    <string name="song">Song</string>
+    <string name="last_played_track">You last played a track called </string>
+    <string name="track">Song</string>
     <string name="by">by</string>
     <string name="artist">Artist</string>
     <string name="welcome_user">Welcome User!</string>
-    <string name="select_a_song">SELECT A SONG</string>
+    <string name="select_a_track">SELECT A TRACK</string>
     <string name="ar_available_default">AR is (not) available on this device.</string>
     <string name="start_ar">START AR</string>
     <string name="let_s_dance">Let\'s Dance!</string>
-    <string name="song_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
-    <string name="you_have_chosen">Choose a song from your library! You have chosen:</string>
+    <string name="track_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
+    <string name="you_have_chosen">Choose a track from your library! You have chosen:</string>
     <string name="icon2">Search</string>
     <string name="icon1">Library</string>
     <string name="SearchHint">Search the Library...</string>

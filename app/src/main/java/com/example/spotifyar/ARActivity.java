@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import com.example.spotifyar.services.PlayerService;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -44,11 +45,10 @@ public class ARActivity extends AppCompatActivity {
         setContentView(R.layout.activity_a_r);
 
         Intent intent = getIntent();
-        TrackItem selectedTrack = (TrackItem) intent.getExtras().getSerializable("selectedTrack");
+        String selectedTrack = intent.getExtras().getString("selectedTrack");
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
-        PlayerService playerService = new PlayerService(ARActivity.this);
-        playerService.addSongToPlaybackQueue(selectedTrack);
+
 
 
         ModelRenderable.builder()
@@ -67,11 +67,12 @@ public class ARActivity extends AppCompatActivity {
 
 
 
-//        andyAnimator.setInterpolator(new )
-        // Get the animation data called "andy_dance" from the `andyRenderable`.
-        AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
-        ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
 
+
+
+        PlayerService playerService = new PlayerService(ARActivity.this);
+        playerService.addSongToPlaybackQueue(selectedTrack);
+        
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (andyRenderable == null) {
@@ -89,10 +90,15 @@ public class ARActivity extends AppCompatActivity {
                     andy.setRenderable(andyRenderable);
                     andy.select();
 
-                    if (!andyAnimator.isStarted()) {
-                        playerService.playQueuedSong();
-                        andyAnimator.start();
-                    }
+                    //        andyAnimator.setInterpolator(new )
+                    // Get the animation data called "andy_dance" from the `andyRenderable`.
+                    AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
+                    ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
+
+
+                    playerService.playQueuedSong();
+                    andyAnimator.start();
+                    
                 });
 
 

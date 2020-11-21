@@ -12,7 +12,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:text="@string/song_by_artist"
+        android:text="@string/track_by_artist"
         app:layout_constraintBottom_toBottomOf="@+id/startArBtn2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.077"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.spotifyar.SearchBarFragment"
+        android:name="com.example.spotifyar.fragments.SearchBarFragment"
         android:layout_width="417dp"
         android:layout_height="91dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/fragment_search_result_list"
-        android:name="com.example.spotifyar.SearchResultListFragment"
+        android:name="com.example.spotifyar.fragments.SearchRecyclerFragment"
         android:layout_width="414dp"
         android:layout_height="510dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavMenuLibrary"

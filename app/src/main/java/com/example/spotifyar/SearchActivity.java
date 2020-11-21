@@ -10,16 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.example.spotifyar.fragments.SearchBarFragment;
+import com.example.spotifyar.fragments.SearchRecyclerFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.spotify.protocol.types.Album;
+import com.spotify.protocol.types.Artist;
+import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity implements SearchBarFragment.ControlFragmentListener {
     private Button danceBtn;
     private TextView songConfirmView;
-    SearchResultListFragment SearchResultFrag;
+    SearchRecyclerFragment SearchResultFrag;
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -31,7 +35,7 @@ public class SearchActivity extends AppCompatActivity implements SearchBarFragme
         danceBtn = (Button) findViewById(R.id.startArBtn2);
         songConfirmView = (TextView) findViewById(R.id.confirmSongView2);
 
-        SearchResultFrag = (SearchResultListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_search_result_list);
+        SearchResultFrag = (SearchRecyclerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_search_result_list);
 
         songConfirmView.setText("");
         danceBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,11 +62,8 @@ public class SearchActivity extends AppCompatActivity implements SearchBarFragme
                 });
     }
 
-
     @Override
-    public void loadTrackData(ArrayList<Song> tracks) {
-       //Send the data into the top fragment (Send the data into Search
-        //Pass the list into the adapter
+    public void loadTrackData(ArrayList<Track> tracks) {
         SearchResultFrag.updateTrackAdapter(tracks);
     }
 
