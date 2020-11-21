@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
         String displayName = sharedPreferences.getString("display_name", "User");
+        displayName="tung.truong";
         userWelcome.setText("Welcome " + displayName + "!");
 
         getTracks(); // Updates Song view

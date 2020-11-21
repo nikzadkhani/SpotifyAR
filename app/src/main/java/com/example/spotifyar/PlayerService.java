@@ -55,6 +55,16 @@ public class PlayerService {
         }
     }
 
+    public void addSongToPlaybackQueue(String uri){
+        JSONArray uriArray = new JSONArray();
+        uriArray.put(uri);
+        try {
+            songsToPlay.put("uris", uriArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void playQueuedSong() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, ENDPOINT,
                 songsToPlay, response -> {

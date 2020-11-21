@@ -107,9 +107,7 @@ private String[] dropDown = {"Album", "Artist", "Track"};
                     String input = searchBar.getText().toString();
                     String queryType = spinner.getSelectedItem().toString();
 
-                // pass in queryType to searchactivity
-
-               //Assume we have the correct data, now we have to transfer it to the main activity
+                    //Passes in data into Search Activity
                     searchService.getSearchResults(input, queryType, () -> {
                         if(queryType.equals("Track")){
                             ArrayList<Song> tracks = searchService.getSongArray();

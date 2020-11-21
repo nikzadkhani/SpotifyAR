@@ -28,6 +28,13 @@ import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+//Accomplished the tempo synch
+//Retrieve the BPM and incorporate into our code
+//Create the function that checks the BPM and if its less than 100 divide by 2
+//Click to stop is optional if we have time
+
+
+
 
 public class ARActivity extends AppCompatActivity {
     private final String NO_PERMISSION = "Camera permission is needed to run this application";
@@ -38,17 +45,21 @@ public class ARActivity extends AppCompatActivity {
     private SkeletonNode andy;
     private ModelAnimator animator;
 
+    private final double AVERAGE_BPM = 100.00;
+    private int bpm;
+    double newDuration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_r);
 
         Intent intent = getIntent();
-        TrackItem selectedTrack = (TrackItem) intent.getExtras().getSerializable("selectedTrack");
-
+        String selectedTrack = intent.getExtras().getString("selectedTrack");
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
         PlayerService playerService = new PlayerService(ARActivity.this);
         playerService.addSongToPlaybackQueue(selectedTrack);
+
 
 
         ModelRenderable.builder()
@@ -68,9 +79,7 @@ public class ARActivity extends AppCompatActivity {
 
 
 //        andyAnimator.setInterpolator(new )
-        // Get the animation data called "andy_dance" from the `andyRenderable`.
-        AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
-        ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
+        
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
@@ -89,10 +98,35 @@ public class ARActivity extends AppCompatActivity {
                     andy.setRenderable(andyRenderable);
                     andy.select();
 
-                    if (!andyAnimator.isStarted()) {
-                        playerService.playQueuedSong();
-                        andyAnimator.start();
+                    // Get the animation data called "andy_dance" from the `andyRenderable`.
+                    AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
+                    ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
+                   // andyAnimator.setInterpolator(new TempoSyncInterpolator());
+                    Log.v("totalDurationOld", String.valueOf(andyAnimator.getTotalDuration()));
+                    //Test: 25, 50, 75, 100, 125, 150. Note: Songs will never a bpm of 25, 50 is also rare.
+                    // Tungs Favorite: 125 fast, 25 slow, 75~100 normal
+                    // Mengqiao Favorite: <100 divide by 2, Remain the same (lets use this) (function for this)
+                    if(bpm < 100){
+                        newDuration = (double) (2*AVERAGE_BPM/bpm);
                     }
+                    else{
+                        newDuration = (double) (AVERAGE_BPM/bpm);
+                    }
+                     
+                    Log.v("newDuration", String.valueOf(newDuration));
+                    andyAnimator.setDuration((long) (andyAnimator.getTotalDuration() * newDuration));
+                    Log.v("totalDurationNew", String.valueOf(andyAnimator.getTotalDuration()));
+                    andyAnimator.setRepeatCount(100);
+                    //Make an equation that takes in BPM and converts it into a extension of time.
+
+                    //Repeat count should be the total milliseconds of song/ total duration to dance through whole song
+
+
+                    playerService.playQueuedSong();
+                    andyAnimator.start();
+
+                    //Research Notes: Slow dance cuts off before 9 seconds
+
                 });
 
 

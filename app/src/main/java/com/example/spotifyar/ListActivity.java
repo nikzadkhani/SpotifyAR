@@ -36,7 +36,7 @@ public class ListActivity extends AppCompatActivity implements TrackFragmentList
             public void onClick(View v) {
                 TrackItem currentTrack = trackFragment.getCurrentSelectedTrack();
                 Intent intent = new Intent(ListActivity.this, ARActivity.class);
-                intent.putExtra("selectedTrack", currentTrack);
+                intent.putExtra("selectedTrack", currentTrack.uri);
                 startActivity(intent);
             }
         });

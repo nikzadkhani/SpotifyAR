@@ -21,6 +21,5 @@ public class Audio {
     }
 
     private int tempo;
-
-
+    
 }
