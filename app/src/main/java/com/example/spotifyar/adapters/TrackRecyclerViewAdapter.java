@@ -7,6 +7,7 @@ package com.example.spotifyar.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,15 +53,15 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         holder.track = this.tracks[position];
         holder.trackTitleView.setText(holder.track.name);
         holder.trackArtistView.setText(holder.track.artists.get(0).name);
-        
-        if (previousSelection != -1 && previousSelection == position) 
-            holder.constraintLayout.setBackgroundColor(normalColor);
-        
+
         if (currentSelection != -1 && currentSelection == position)
             holder.constraintLayout.setBackgroundColor(selectedColor);
+        else {
+            holder.constraintLayout.setBackgroundColor(normalColor);
+        }
 
 
-        /* The commented code below has a bug where if the keyboard is brought up it gets funky.*/
+
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,20 +71,31 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 notifyItemChanged(currentSelection);
                 notifyItemChanged(previousSelection);
 
+
                 listener.onTrackItemClicked(currentSelection);
             }
         });
 
-        holder.constraintLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+/*
+        holder.constraintLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (holder.constraintLayout.isClickable()) {
                     holder.constraintLayout.setClickable(false);
+                    return false;
                 } else {
                     holder.constraintLayout.setClickable(true);
+                    return true;
                 }
             }
         });
+*/
+        /* The commented code below has a bug where if the keyboard is brought up it gets funky.*/
+
+
+
+
     }
 
     @Override

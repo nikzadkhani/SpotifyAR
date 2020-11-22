@@ -1,24 +1,29 @@
 package com.example.spotifyar.models;
 
-public class Audio {
-    private int tempo;
+import android.util.Log;
 
-    public Audio(int tempo) {
+public class Audio {
+    private float tempo;
+    private int duration_ms;
+
+    public Audio(float tempo, int duration_ms) {
         this.tempo = tempo;
+        this.duration_ms = duration_ms;
     }
 
-    public int getTempo() {
+    public float getTempo() {
         return tempo;
     }
 
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
+    public int getDuration() {
+        return duration_ms;
     }
 
     @Override
     public String toString() {
         return "Audio{" +
                 "tempo=" + tempo +
+                "duration_in_ms=" + duration_ms +
                 '}';
     }
 

@@ -33,11 +33,16 @@ public class AudioService {
         queue = Volley.newRequestQueue(context);
     }
 
+    public Audio getCurrentAudio(){
+        return audio;
+    }
+
     public Audio getAudioFeatures(String uri, final VolleyCallBack callBack) {
         if (uri.equals("") || !uri.contains(":"))
             throw new IllegalArgumentException("Invalid URI in AudioService");
 
-        int idStartIndex = uri.lastIndexOf(":");
+        int idStartIndex = uri.lastIndexOf(":")+1;
+
         String id = uri.substring(idStartIndex);
 
         String endpoint = "https://api.spotify.com/v1/audio-features/" + id;
