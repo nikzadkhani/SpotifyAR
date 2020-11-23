@@ -83,20 +83,34 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/artistView"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.393" />
 
     <TextView
         android:id="@+id/arAvailabilityView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="410dp"
+        android:layout_marginBottom="145dp"
         android:text="@string/ar_available_default"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/selectTrackBtn"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistView" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLogOut"
+        android:layout_width="157dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="40dp"
+        android:text="Log Out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectTrackBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

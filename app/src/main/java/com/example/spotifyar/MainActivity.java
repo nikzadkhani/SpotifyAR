@@ -23,6 +23,10 @@ import com.google.ar.core.ArCoreApk;
 import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
     private final String AR_AVAILABLE = "AR is available on this device.";
@@ -33,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView artistView;
     private TextView arAvailabilityView;
     private Button selectTrackBtn;
+    private Button logOutBtn;
 
     private TrackService trackService;
     private ArrayList<Track> recentlyPlayedTracks;
     private Track[] libraryTracks;
     private PlayerService playerService;
+
+    private SharedPreferences sharedPreferences;
 
     private Track track;
 
@@ -52,12 +59,31 @@ public class MainActivity extends AppCompatActivity {
         artistView = (TextView) findViewById(R.id.artistView);
         arAvailabilityView = (TextView) findViewById(R.id.arAvailabilityView);
         selectTrackBtn = (Button) findViewById(R.id.selectTrackBtn);
+        logOutBtn = (Button) findViewById(R.id.buttonLogOut);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
+        sharedPreferences = getSharedPreferences("SPOTIFY", 0);
         String displayName = sharedPreferences.getString("display_name", "User");
         userWelcome.setText("Welcome " + displayName + "!");
 
         getTracks(); // Updates Track view
+
+        logOutBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                AuthorizationClient.clearCookies(getApplicationContext());
+                deleteSharedPreferences("SPOTIFY");
+                getSharedPreferences("SPOTIFY", 0).edit().clear().commit();
+
+                AuthorizationClient.clearCookies(getActivity());
+
+                this.clearPlayerState();
+                isLoggedIn = false;
+                currentAccessToken = null;
+
+                Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                startActivity(intent);
+            }
+        });
 
         selectTrackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +103,21 @@ public class MainActivity extends AppCompatActivity {
      * request return before calling the function again? I changed it to change the
      * Text for a textview instead.
      */
+
+    public void onBackPressed() {
+        if (sharedPreferences.getString("token", "epic").equals("epic")) {
+            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(intent);
+        } else {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+        }
+    }
+
+    //make button --> onClick --> Authorization
+
     private void setArAvailabilityView() {
         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
 

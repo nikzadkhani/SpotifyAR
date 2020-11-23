@@ -23,6 +23,7 @@ import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+
 /**
  * Starting Activity, authenticates
  */
@@ -53,6 +54,13 @@ public class SplashActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(this);
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent=new Intent(this,Mainactivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
 
     private void waitForUserInfo() {
@@ -93,7 +101,6 @@ public class SplashActivity extends AppCompatActivity {
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
@@ -106,12 +113,11 @@ public class SplashActivity extends AppCompatActivity {
 
                 // Auth flow returned an error
                 case ERROR:
-                    // Handle error response
                     break;
 
                 // Most likely auth flow was cancelled
                 default:
-                    // Handle other cases
+
             }
         }
     }
