@@ -1,5 +1,7 @@
 package com.example.spotifyar.models;
 
+import android.util.Log;
+
 public class Audio {
     private float tempo;
     private int duration_ms;
@@ -21,6 +23,7 @@ public class Audio {
     public String toString() {
         return "Audio{" +
                 "tempo=" + tempo +
+                "duration_in_ms=" + duration_ms +
                 '}';
     }
 

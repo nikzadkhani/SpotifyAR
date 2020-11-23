@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/SpotifyAR.iml" filepath="$PROJECT_DIR$/.idea/SpotifyAR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SpotifyAR.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SpotifyAR.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spotify-app-remote/SpotifyAR.spotify-app-remote.iml" filepath="$PROJECT_DIR$/.idea/modules/spotify-app-remote/SpotifyAR.spotify-app-remote.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spotify-auth-release-1.2.1/SpotifyAR.spotify-auth-release-1.2.1.iml" filepath="$PROJECT_DIR$/.idea/modules/spotify-auth-release-1.2.1/SpotifyAR.spotify-auth-release-1.2.1.iml" />
+    </modules>
+  </component>
+</project>

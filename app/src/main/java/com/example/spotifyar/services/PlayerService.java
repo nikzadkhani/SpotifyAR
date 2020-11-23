@@ -22,7 +22,8 @@ import java.util.Map;
  * Service to play selected songs.
  */
 public class PlayerService {
-    private static final String ENDPOINT = "https://api.spotify.com/v1/me/player/play";
+    private static final String PLAY_ENDPOINT = "https://api.spotify.com/v1/me/player/play";
+    private static final String PAUSE_ENDPOINT = "https://api.spotify.com/v1/me/player/pause";
     private SharedPreferences sharedPreferences;
     private RequestQueue queue;
 
@@ -55,7 +56,7 @@ public class PlayerService {
     }
 
     public void playQueuedSong() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, ENDPOINT,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, PLAY_ENDPOINT,
                 songsToPlay, response -> {
                     Log.d("Player Service", response.toString());
                 }, error -> {
@@ -74,5 +75,49 @@ public class PlayerService {
 
         queue.add(jsonObjectRequest);
     }
+//
+    public void pausePlayback() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, PAUSE_ENDPOINT,
+                null, response -> {
+                    Log.d("Player Service", response.toString());
+                }, error -> {
+                    Log.d("Player Service", error.toString());
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String token = sharedPreferences.getString("token", "");
+                String auth = "Bearer " + token;
+                headers.put("Authorization", auth);
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+
+        queue.add(jsonObjectRequest);
+
+    }
+
+    public void resumePlayback() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, PLAY_ENDPOINT,
+                null, response -> {
+                    Log.d("Player Service", response.toString());
+                }, error -> {
+                    Log.d("Player Service", error.toString());
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String token = sharedPreferences.getString("token", "");
+                String auth = "Bearer " + token;
+                headers.put("Authorization", auth);
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
+
+
 
 }
