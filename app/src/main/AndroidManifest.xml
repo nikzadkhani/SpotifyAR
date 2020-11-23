@@ -28,7 +28,6 @@
             android:value="required" />
 
         <activity android:name=".ListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".SearchActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

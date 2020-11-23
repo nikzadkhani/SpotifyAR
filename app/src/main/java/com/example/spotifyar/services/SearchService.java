@@ -10,10 +10,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.spotifyar.interfaces.VolleyCallBack;
+import com.example.spotifyar.models.Album;
 import com.google.gson.Gson;
-import com.spotify.protocol.types.Album;
-import com.spotify.protocol.types.Track;
 import com.spotify.protocol.types.Artist;
+import com.spotify.protocol.types.Track;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,10 +40,6 @@ public class SearchService {
         sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(context);
     }
-
-
-
-
 
     public ArrayList<Track> getTrackArray() {
         return trackArray;

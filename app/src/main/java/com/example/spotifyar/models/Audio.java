@@ -1,18 +1,20 @@
 package com.example.spotifyar.models;
 
 public class Audio {
-    private int tempo;
+    private float tempo;
+    private int duration_ms;
 
-    public Audio(int tempo) {
+    public Audio(float tempo, int duration_ms) {
         this.tempo = tempo;
+        this.duration_ms = duration_ms;
     }
 
-    public int getTempo() {
+    public float getTempo() {
         return tempo;
     }
 
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
+    public int getDuration() {
+        return duration_ms;
     }
 
     @Override

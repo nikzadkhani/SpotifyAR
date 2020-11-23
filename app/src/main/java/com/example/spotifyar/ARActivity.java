@@ -1,10 +1,5 @@
 package com.example.spotifyar;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.animation.TimeInterpolator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,20 +7,17 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.spotifyar.services.PlayerService;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
-import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.SkeletonNode;
 import com.google.ar.sceneform.animation.ModelAnimator;
-import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.AnimationData;
-import com.google.ar.sceneform.rendering.Color;
-import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -72,7 +64,7 @@ public class ARActivity extends AppCompatActivity {
 
         PlayerService playerService = new PlayerService(ARActivity.this);
         playerService.addSongToPlaybackQueue(selectedTrack);
-        
+
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (andyRenderable == null) {
@@ -98,7 +90,7 @@ public class ARActivity extends AppCompatActivity {
 
                     playerService.playQueuedSong();
                     andyAnimator.start();
-                    
+
                 });
 
 

@@ -16,29 +16,46 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyar.R;
-import com.example.spotifyar.interfaces.OnItemClickListener;
+import com.example.spotifyar.interfaces.SearchFragmentListener;
+import com.example.spotifyar.interfaces.TrackFragmentListener;
 import com.spotify.protocol.types.Track;
 
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecyclerViewAdapter.ViewHolder> {
 
     private final Track[] tracks;
     private final Context adapterContext;
-    private final OnItemClickListener listener;
+    private TrackFragmentListener TFL = null;
+    private SearchFragmentListener SFL = null;
     
     private int currentSelection = -1;
-    private int previousSelection = -1;
     
     private final int selectedColor;
     private final int normalColor;
+    
+    private boolean isLibrary;
 
-    public TrackRecyclerViewAdapter(Context context, Track[] tracks, OnItemClickListener listener) {
+    public TrackRecyclerViewAdapter(Context context, Track[] tracks, TrackFragmentListener TFL) {
         this.tracks = tracks;
         this.adapterContext = context;
-        this.listener = listener;
+        this.TFL = TFL;
+        
+        this.selectedColor = ContextCompat.getColor(adapterContext, R.color.colorSecondary);
+        this.normalColor = ContextCompat.getColor(adapterContext, R.color.colorBackground);
+        
+        this.isLibrary = true;
+    }
+
+    public TrackRecyclerViewAdapter(Context context, Track[] tracks, SearchFragmentListener SFL) {
+        this.tracks = tracks;
+        this.adapterContext = context;
+        this.SFL = SFL;
 
         this.selectedColor = ContextCompat.getColor(adapterContext, R.color.colorSecondary);
         this.normalColor = ContextCompat.getColor(adapterContext, R.color.colorBackground);
+
+        this.isLibrary = false;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,36 +69,24 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         holder.track = this.tracks[position];
         holder.trackTitleView.setText(holder.track.name);
         holder.trackArtistView.setText(holder.track.artists.get(0).name);
-        
-        if (previousSelection != -1 && previousSelection == position) 
-            holder.constraintLayout.setBackgroundColor(normalColor);
-        
+
         if (currentSelection != -1 && currentSelection == position)
             holder.constraintLayout.setBackgroundColor(selectedColor);
-
-
+        else
+            holder.constraintLayout.setBackgroundColor(normalColor);
+        
         /* The commented code below has a bug where if the keyboard is brought up it gets funky.*/
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                previousSelection = currentSelection;
                 currentSelection = position;
 
                 notifyItemChanged(currentSelection);
-                notifyItemChanged(previousSelection);
 
-                listener.onTrackItemClicked(currentSelection);
-            }
-        });
-
-        holder.constraintLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    holder.constraintLayout.setClickable(false);
-                } else {
-                    holder.constraintLayout.setClickable(true);
-                }
+                if (isLibrary)
+                    TFL.setLibraryTrackViewText(tracks[currentSelection]);
+                else
+                    SFL.setSearchTrackViewText(tracks[currentSelection]);
             }
         });
     }

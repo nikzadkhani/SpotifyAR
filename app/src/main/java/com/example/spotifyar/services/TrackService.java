@@ -2,7 +2,6 @@ package com.example.spotifyar.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,7 +10,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.spotifyar.interfaces.VolleyCallBack;
 import com.google.gson.Gson;
-
 import com.spotify.protocol.types.Track;
 
 import org.json.JSONArray;
@@ -20,12 +18,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class TrackService {
+    private static final int NUM_TRACKS = 20; // the default number of tracks the api returns
     private ArrayList<Track> recentlyPlayedTracks = new ArrayList<>();
-    private Track[] libraryTracks = new Track[20];
+    private Track[] libraryTracks = new Track[NUM_TRACKS];
     private SharedPreferences sharedPreferences;
     private RequestQueue queue;
 

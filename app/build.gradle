@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.google.ar.sceneform:core:1.15.0'
     implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
     implementation "com.google.ar.sceneform:animation:1.15.0"
+    implementation "androidx.fragment:fragment:1.2.1"
 
 
 }

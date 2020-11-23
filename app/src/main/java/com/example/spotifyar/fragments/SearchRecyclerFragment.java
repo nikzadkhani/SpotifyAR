@@ -2,6 +2,10 @@ package com.example.spotifyar.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,28 +13,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.spotifyar.R;
+import com.example.spotifyar.adapters.AlbumRecyclerViewAdapter;
+import com.example.spotifyar.adapters.ArtistRecyclerViewAdapter;
 import com.example.spotifyar.adapters.TrackRecyclerViewAdapter;
-import com.example.spotifyar.interfaces.OnItemClickListener;
-
+import com.example.spotifyar.interfaces.SearchFragmentListener;
+import com.example.spotifyar.interfaces.TrackFragmentListener;
+import com.example.spotifyar.models.Album;
+import com.spotify.protocol.types.Artist;
+import com.spotify.protocol.types.Track;
 
 import java.util.ArrayList;
-
-import com.example.spotifyar.R;
-import com.spotify.protocol.types.Track;
 
 /**
  * A fragment representing a list of Items.
  */
-public class SearchRecyclerFragment extends Fragment implements OnItemClickListener {
+public class SearchRecyclerFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-
-    private Track[] tracks;
 
     private RecyclerView recyclerView;
     private int currentSelectedTrackIndex;
@@ -57,6 +58,7 @@ public class SearchRecyclerFragment extends Fragment implements OnItemClickListe
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
     }
 
     @Override
@@ -66,12 +68,6 @@ public class SearchRecyclerFragment extends Fragment implements OnItemClickListe
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-    }
-
-    @Override
-    public void onTrackItemClicked(int position) {
-        this.currentSelectedTrackIndex = position;
-
     }
 
     @Override
@@ -93,19 +89,26 @@ public class SearchRecyclerFragment extends Fragment implements OnItemClickListe
         return view;
     }
 
-        public Track getTrackAtIndex (int index){
-            return tracks[index];
-        }
 
-        //Make 3 different adapts
-        public void updateTrackAdapter(ArrayList<Track> adapterContent) {
-            //If both pages are changing or only one is changing, check this line
-            Track[] tracks = new Track[adapterContent.size()];
-            for (int i = 0; i < adapterContent.size(); i++) {
-                tracks[i] = adapterContent.get(i);
-            }
-            recyclerView.setAdapter(new TrackRecyclerViewAdapter(context, tracks, this));;
+
+    //Make 3 different adapts
+    public void updateToTrackAdapter(ArrayList<Track> adapterContent) {
+        Log.v("updateToTrackAdapter", adapterContent.toString());
+        //If both pages are changing or only one is changing, check this line
+        Track[] tracks = new Track[adapterContent.size()];
+        for (int i = 0; i < adapterContent.size(); i++) {
+            tracks[i] = adapterContent.get(i);
         }
+        recyclerView.setAdapter(new TrackRecyclerViewAdapter(context, tracks, (SearchFragmentListener) getContext()));
+    }
+
+    public void updateToAlbumAdapter(ArrayList<Album> albums) {
+        recyclerView.setAdapter(new AlbumRecyclerViewAdapter(context, albums, (SearchFragmentListener) getContext()));
+    }
+
+    public void updateToArtistAdapter(ArrayList<Artist> artists) {
+        recyclerView.setAdapter(new ArtistRecyclerViewAdapter(context, artists, (SearchFragmentListener) getContext()));
+    }
 
 
 }

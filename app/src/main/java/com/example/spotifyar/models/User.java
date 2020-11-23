@@ -1,7 +1,5 @@
 package com.example.spotifyar.models;
 
-import androidx.annotation.NonNull;
-
 public class User {
     private String country;
     private String display_name;

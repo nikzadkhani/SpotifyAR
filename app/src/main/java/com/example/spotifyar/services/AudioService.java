@@ -2,7 +2,6 @@ package com.example.spotifyar.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,15 +10,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.spotifyar.interfaces.VolleyCallBack;
 import com.example.spotifyar.models.Audio;
-import com.example.spotifyar.models.User;
 import com.google.gson.Gson;
-import com.spotify.protocol.types.Track;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

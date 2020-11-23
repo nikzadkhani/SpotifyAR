@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TrackService trackService;
     private ArrayList<Track> recentlyPlayedTracks;
-    private Track[] libraryTracks;
-    private PlayerService playerService;
+    private SharedPreferences sharedPreferences;
 
     private Track track;
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         arAvailabilityView = (TextView) findViewById(R.id.arAvailabilityView);
         selectTrackBtn = (Button) findViewById(R.id.selectTrackBtn);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("SPOTIFY", 0);
+        sharedPreferences = getSharedPreferences("SPOTIFY", 0);
         String displayName = sharedPreferences.getString("display_name", "User");
         userWelcome.setText("Welcome " + displayName + "!");
 
@@ -69,6 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Test to see if AR is supported on device
         setArAvailabilityView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sharedPreferences.getString("token", "epic").equals("epic")) {
+            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(intent);
+        } else {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+        }
     }
 
     /*

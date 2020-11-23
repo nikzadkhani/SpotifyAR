@@ -11,8 +11,8 @@
     <string name="let_s_dance">Let\'s Dance!</string>
     <string name="track_by_artist"><![CDATA[<#>. <Song> by <artist>]]></string>
     <string name="you_have_chosen">Choose a track from your library! You have chosen:</string>
-    <string name="icon2">Search</string>
-    <string name="icon1">Library</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
     <string name="SearchHint">Search the Library...</string>
     <string name="Search">Search!</string>
 
