@@ -7,6 +7,7 @@ package com.example.spotifyar.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -84,6 +85,20 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 }
             }
         });
+
+        holder.constraintLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (holder.constraintLayout.isClickable()) {
+                    holder.constraintLayout.setClickable(false);
+                    return false;
+                } else {
+                    holder.constraintLayout.setClickable(true);
+                    return true;
+                }
+            }
+        });
+
     }
 
     @Override
