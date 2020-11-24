@@ -27,6 +27,7 @@ import com.example.spotifyar.fragments.SearchRecyclerFragment;
 import com.example.spotifyar.interfaces.SearchFragmentListener;
 import com.example.spotifyar.interfaces.TrackFragmentListener;
 import com.example.spotifyar.models.Album;
+import com.example.spotifyar.services.PlayerService;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.spotify.protocol.types.Artist;
@@ -114,18 +115,21 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     public void setSearchTrackViewText(Track track) {
         getSearchFragment().setConfirmTrackViewText(track);
         currentTrack = track;
+        currentQueryType = "Track";
     }
 
     @Override
     public void setArtistViewText(Artist artist) {
         getSearchFragment().setConfirmArtistViewText(artist);
         currentArtist = artist;
+        currentQueryType = "Artist";
     }
 
     @Override
     public void setAlbumViewText(Album album) {
         getSearchFragment().setConfirmAlbumViewText(album);
         currentAlbum = album;
+        currentQueryType = "Album";
     }
 
     public LibraryFragment getLibraryFragment() {
@@ -146,6 +150,11 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
                 }
             case "Artist":
                 if (currentArtist != null) {
+//                     Log.v("currentArtist", currentArtist.toString());
+//                     PlayerService p = new PlayerService(getApplicationContext());
+//                     p.addSongToPlaybackQueue(currentArtist.uri);
+//                     p.playQueuedSong();
+
                     intent.putExtra("uri", currentArtist.uri);
                     startActivity(intent);
                 }

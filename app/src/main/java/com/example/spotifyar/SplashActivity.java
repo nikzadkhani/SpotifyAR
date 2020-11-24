@@ -37,7 +37,8 @@ public class SplashActivity extends AppCompatActivity {
     private static final String REDIRECT_URI = "https://com.example.spotifyar/callback";
     private static final int REQUEST_CODE = 1337;
     private static final String[] SCOPES =  new String[] {"user-read-currently-playing",
-            "user-read-email", "user-read-private", "user-library-read", "user-modify-playback-state"
+            "user-read-email", "user-read-private", "user-library-read", "user-modify-playback-state",
+            "user-read-playback-state"
 };
 //            "playlist-read-collaborative"
     @Override

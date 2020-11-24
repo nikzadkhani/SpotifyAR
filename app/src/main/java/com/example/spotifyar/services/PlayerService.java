@@ -50,13 +50,16 @@ public class PlayerService {
     }
 
     public void addSongToPlaybackQueue(String uri) {
-        JSONArray uriArray = new JSONArray();
-        uriArray.put(uri);
+//         JSONArray uriArray = new JSONArray();
+//         uriArray.put(uri);
         try {
-            songsToPlay.put("uris", uriArray);
+//             songsToPlay.put("uris", uriArray);
+            songsToPlay.put("context_uri", uri);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public void playQueuedSong() {
@@ -79,6 +82,8 @@ public class PlayerService {
 
         queue.add(jsonObjectRequest);
     }
+
+
 //
     public void pausePlayback() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, PAUSE_ENDPOINT,
@@ -107,7 +112,8 @@ public class PlayerService {
                 null, response -> {
                     Log.d("Player Service", response.toString());
                 }, error -> {
-                    Log.d("Player Service", error.toString());
+                    Log.d("Player Service", error.getCause().toString());
+                    Log.d("Player Service", error.getMessage());
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -122,12 +128,17 @@ public class PlayerService {
         queue.add(jsonObjectRequest);
     }
 
-    public void getCurrentPlayingTrack(VolleyCallBack callBack) {
-        String endpoint = "https://api.spotify.com/v1/me/player/recently-played";
+    public Track getCurrentPlayingTrack() {
+        return currentPlayingTrack;
+    }
+
+    public void loadCurrentPlayingTrack(VolleyCallBack callBack) {
+        String endpoint = "https://api.spotify.com/v1/me/player";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint, null, response -> {
+                    Log.v("response", response.toString());
                     Gson gson = new Gson();
-                    currentPlayingTrack = gson.fromJson(response.optJSONArray("item").toString(), Track.class);
+                    currentPlayingTrack = gson.fromJson(response.optJSONObject("item").toString(), Track.class);
                     callBack.onSuccess();
                 }, error -> {
                     // TODO: Handle error

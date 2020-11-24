@@ -28,6 +28,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     private SearchFragmentListener SFL = null;
     
     private int currentSelection = -1;
+    private int previousSelection = -1;
     
     private final int selectedColor;
     private final int normalColor;
