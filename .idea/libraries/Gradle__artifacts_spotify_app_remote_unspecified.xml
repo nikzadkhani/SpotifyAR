@@ -7,6 +7,9 @@
       <root url="file://$PROJECT_DIR$/spotify-app-remote/build/.transforms/3a2f54ff25bc2b7e49d05def2cdc9071/jetified-spotify-app-remote-release-0.7.1/res" />
       <root url="file://$PROJECT_DIR$/spotify-app-remote/build/.transforms/3a2f54ff25bc2b7e49d05def2cdc9071/jetified-spotify-app-remote-release-0.7.1/AndroidManifest.xml" />
       <root url="jar://$PROJECT_DIR$/spotify-app-remote/build/.transforms/3a2f54ff25bc2b7e49d05def2cdc9071/jetified-spotify-app-remote-release-0.7.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/spotify-app-remote/build/.transforms/67e61e5fc07a3e996d33d0914801175c/jetified-spotify-app-remote-release-0.7.1/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/spotify-app-remote/build/.transforms/67e61e5fc07a3e996d33d0914801175c/jetified-spotify-app-remote-release-0.7.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/spotify-app-remote/build/.transforms/67e61e5fc07a3e996d33d0914801175c/jetified-spotify-app-remote-release-0.7.1/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -7,6 +7,9 @@
       <root url="file://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/be521a26d756457d67414f0945eaf58b/jetified-spotify-auth-release-1.2.1/res" />
       <root url="file://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/be521a26d756457d67414f0945eaf58b/jetified-spotify-auth-release-1.2.1/AndroidManifest.xml" />
       <root url="jar://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/be521a26d756457d67414f0945eaf58b/jetified-spotify-auth-release-1.2.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/c0498d8c91cfb239859e523c897d2a09/jetified-spotify-auth-release-1.2.1/AndroidManifest.xml" />
+      <root url="file://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/c0498d8c91cfb239859e523c897d2a09/jetified-spotify-auth-release-1.2.1/res" />
+      <root url="jar://$PROJECT_DIR$/spotify-auth-release-1.2.1/build/.transforms/c0498d8c91cfb239859e523c897d2a09/jetified-spotify-auth-release-1.2.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

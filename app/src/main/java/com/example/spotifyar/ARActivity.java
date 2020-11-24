@@ -109,35 +109,40 @@ public class ARActivity extends AppCompatActivity {
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
 
+                    //create the model
+                    ModelRenderable.builder()
+                            .setSource(this, R.raw.andy_dance)
+                            .build()
+                            .thenAccept(renderable -> andyRenderable = renderable)
+                            .exceptionally(
+                                    throwable -> {
+                                        Toast toast =
+                                                Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+                                        Log.e(TAG, "");
+                                        return null;
+                                    });
+
                     mSpotifyAppRemote.getPlayerApi().play(uri);
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    Log.v("Hit Plane", "WE hit the plane");
                     mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
                         Track currentTrack = playerState.track;
                         Log.v("CurrentPlayingTrack", currentTrack.toString());
+
                         audioService.getAudioFeatures(currentTrack.uri, () -> {
                             Audio audio = audioService.getCurrentAudio();
                             tempo = audio.getTempo();
                             durationInMs = audio.getDuration();
+                            Log.v("CurrentTempo", String.valueOf(tempo));
 
 
-                            //create the model
-                            ModelRenderable.builder()
-                                    .setSource(this, R.raw.andy_dance)
-                                    .build()
-                                    .thenAccept(renderable -> andyRenderable = renderable)
-                                    .exceptionally(
-                                            throwable -> {
-                                                Toast toast =
-                                                        Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                                toast.show();
-                                                Log.e(TAG, "");
-                                                return null;
-                                            });
+
 
                             if (andyRenderable == null) {
                                 return;
@@ -233,6 +238,7 @@ public class ARActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        mSpotifyAppRemote.getPlayerApi().pause();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 

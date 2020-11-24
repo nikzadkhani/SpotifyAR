@@ -62,6 +62,8 @@ public class SplashActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
+
+        //Check wifi and authentication
         NetworkInfo wifiStatus = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (wifiStatus != null && wifiStatus.isConnected()) {

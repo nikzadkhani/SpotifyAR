@@ -143,6 +143,8 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     public void danceBtnOnClickSearch() {
         Intent intent = new Intent(ListActivity.this, ARActivity.class);
         intent.putExtra("uriType", currentQueryType);
+        if (currentQueryType == null)
+            return;
         switch (currentQueryType) {
             case "Track":
                 if (currentTrack != null) {
