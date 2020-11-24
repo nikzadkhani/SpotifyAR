@@ -88,9 +88,7 @@ public class SearchRecyclerFragment extends Fragment {
         }
         return view;
     }
-
-
-
+    
     //Make 3 different adapts
     public void updateToTrackAdapter(ArrayList<Track> adapterContent) {
         Log.v("updateToTrackAdapter", adapterContent.toString());
@@ -109,6 +107,4 @@ public class SearchRecyclerFragment extends Fragment {
     public void updateToArtistAdapter(ArrayList<Artist> artists) {
         recyclerView.setAdapter(new ArtistRecyclerViewAdapter(context, artists, (SearchFragmentListener) getContext()));
     }
-
-
 }

@@ -9,6 +9,7 @@
 
 package com.example.spotifyar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,6 +49,12 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     private SearchFragment searchFragment;
     private LibraryFragment libraryFragment;
 
+    private Track currentTrack;
+    private Artist currentArtist;
+    private Album currentAlbum;
+
+    private String currentQueryType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,55 +80,90 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     @Override
     public void setLibraryTrackViewText(Track track) {
         getLibraryFragment().setConfirmText(track);
+        currentTrack = track;
     }
 
     @Override
     public void loadTrackData(ArrayList<Track> tracks) {
-        searchFragment = getSearchFragment();
-
-        FragmentManager fcm = searchFragment.getChildFragmentManager();
-        Toast.makeText(getApplicationContext(), fcm.getFragments().toString(), Toast.LENGTH_LONG);
+        FragmentManager fcm = getSearchFragment().getChildFragmentManager();
         searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
         searchRecyclerFragment.updateToTrackAdapter(tracks);
+        currentQueryType = "Track";
+        currentTrack = null;
     }
 
     @Override
     public void loadArtistData(ArrayList<Artist> artists) {
-        searchFragment = getSearchFragment();
-
-        FragmentManager fcm = searchFragment.getChildFragmentManager();
-        Toast.makeText(getApplicationContext(), fcm.getFragments().toString(), Toast.LENGTH_LONG);
+        FragmentManager fcm = getSearchFragment().getChildFragmentManager();
         searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
         searchRecyclerFragment.updateToArtistAdapter(artists);
+        currentQueryType = "Artist";
+        currentArtist = null;
     }
 
     @Override
     public void loadAlbumData(ArrayList<Album> albums) {
+        FragmentManager fcm = getSearchFragment().getChildFragmentManager();
+        searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
         searchRecyclerFragment.updateToAlbumAdapter(albums);
+        currentQueryType = "Album";
+        currentAlbum = null;
     }
 
     @Override
     public void setSearchTrackViewText(Track track) {
         getSearchFragment().setConfirmTrackViewText(track);
+        currentTrack = track;
     }
 
     @Override
     public void setArtistViewText(Artist artist) {
         getSearchFragment().setConfirmArtistViewText(artist);
+        currentArtist = artist;
     }
 
     @Override
     public void setAlbumViewText(Album album) {
         getSearchFragment().setConfirmAlbumViewText(album);
+        currentAlbum = album;
     }
 
     public LibraryFragment getLibraryFragment() {
-        return (LibraryFragment )getSupportFragmentManager().findFragmentByTag(LIBRARY_TAG);
+        return (LibraryFragment) getSupportFragmentManager().findFragmentByTag(LIBRARY_TAG);
     }
-
     public SearchFragment getSearchFragment() {
-        return (SearchFragment )getSupportFragmentManager().findFragmentByTag(SEARCH_TAG);
+        return (SearchFragment) getSupportFragmentManager().findFragmentByTag(SEARCH_TAG);
     }
 
 
+    public void danceBtnOnClickSearch() {
+        Intent intent = new Intent(ListActivity.this, ARActivity.class);
+        switch (currentQueryType) {
+            case "Track":
+                if (currentTrack != null) {
+                    intent.putExtra("uri", currentTrack.uri);
+                    startActivity(intent);
+                }
+            case "Artist":
+                if (currentArtist != null) {
+                    intent.putExtra("uri", currentArtist.uri);
+                    startActivity(intent);
+                }
+            case "Album":
+                if (currentAlbum != null) {
+                    intent.putExtra("uri", currentAlbum.getUri());
+                    startActivity(intent);
+                }
+            default:
+
+        }
+    }
+    public void danceBtnOnClickLibrary() {
+//        Toast.makeText(getApplicationContext(), currentTrack.toString(), Toast.LENGTH_LONG).show();
+        if (currentTrack != null) {
+            Intent intent = new Intent(ListActivity.this, ARActivity.class);
+            intent.putExtra("uri", currentTrack.uri);
+            startActivity(intent);
+        }
+    }
 }

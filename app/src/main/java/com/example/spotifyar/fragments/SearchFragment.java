@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.spotifyar.R;
+import com.example.spotifyar.interfaces.SearchFragmentListener;
 import com.example.spotifyar.models.Album;
 import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Track;
@@ -20,7 +21,6 @@ public class SearchFragment extends Fragment {
     private Button danceBtn;
     private TextView searchedTrackView;
 
-    private Context appContext;
 
     private SearchRecyclerFragment SearchResultFrag;
 
@@ -39,7 +39,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        appContext = context;
     }
 
     @Override
@@ -50,6 +49,13 @@ public class SearchFragment extends Fragment {
         searchedTrackView = (TextView) view.findViewById(R.id.searchedTrackView);
 
         searchedTrackView.setText("");
+
+        danceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SearchFragmentListener) getContext()).danceBtnOnClickSearch();
+            }
+        });
 
         return view;
     }

@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.spotifyar.R;
+import com.example.spotifyar.interfaces.SearchFragmentListener;
+import com.example.spotifyar.interfaces.TrackFragmentListener;
 import com.spotify.protocol.types.Track;
 
 public class LibraryFragment extends Fragment {
@@ -41,6 +43,13 @@ public class LibraryFragment extends Fragment {
         danceBtn = (Button) view.findViewById(R.id.startArBtn);
 
         trackConfirmView.setText("");
+
+        danceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((TrackFragmentListener) getContext()).danceBtnOnClickLibrary();
+            }
+        });
 
         return view;
     }

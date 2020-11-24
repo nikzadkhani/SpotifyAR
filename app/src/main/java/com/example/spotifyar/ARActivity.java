@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.spotifyar.models.Audio;
 import com.example.spotifyar.services.AudioService;
 import com.example.spotifyar.services.PlayerService;
@@ -18,6 +20,7 @@ import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.SkeletonNode;
 import com.google.ar.sceneform.animation.ModelAnimator;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.AnimationData;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -85,19 +88,9 @@ public class ARActivity extends AppCompatActivity {
         setContentView(R.layout.activity_a_r);
 
         Intent intent = getIntent();
-        String selectedTrack = intent.getExtras().getString("selectedTrack");
-        selectedTrackName = intent.getExtras().getString("selectedTrackName");
-
-
+        String selectedTrack = intent.getExtras().getString("uri");
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
-
-
-
-
-
-
-
 
         PlayerService playerService = new PlayerService(ARActivity.this);
         playerService.addSongToPlaybackQueue(selectedTrack);

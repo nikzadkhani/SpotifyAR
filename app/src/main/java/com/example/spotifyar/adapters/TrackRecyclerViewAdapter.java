@@ -7,7 +7,6 @@ package com.example.spotifyar.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -32,17 +31,17 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     
     private final int selectedColor;
     private final int normalColor;
-    
+
     private boolean isLibrary;
 
     public TrackRecyclerViewAdapter(Context context, Track[] tracks, TrackFragmentListener TFL) {
         this.tracks = tracks;
         this.adapterContext = context;
         this.TFL = TFL;
-        
+
         this.selectedColor = ContextCompat.getColor(adapterContext, R.color.colorSecondary);
         this.normalColor = ContextCompat.getColor(adapterContext, R.color.colorBackground);
-        
+
         this.isLibrary = true;
     }
 
@@ -84,10 +83,11 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
                 notifyItemChanged(currentSelection);
 
-                if (isLibrary)
+                if (isLibrary) {
                     TFL.setLibraryTrackViewText(tracks[currentSelection]);
-                else
+                } else {
                     SFL.setSearchTrackViewText(tracks[currentSelection]);
+                }
             }
         });
     }

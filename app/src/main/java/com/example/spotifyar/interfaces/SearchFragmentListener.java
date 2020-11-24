@@ -15,4 +15,6 @@ public interface SearchFragmentListener {
     void setSearchTrackViewText(Track track);
     void setArtistViewText(Artist artist);
     void setAlbumViewText(Album album);
+    
+    void danceBtnOnClickSearch();
 }
