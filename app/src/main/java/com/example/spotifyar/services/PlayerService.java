@@ -49,17 +49,22 @@ public class PlayerService {
         }
     }
 
-    public void addSongToPlaybackQueue(String uri) {
-//         JSONArray uriArray = new JSONArray();
-//         uriArray.put(uri);
+    public void addArtistAlbumToPlaybackQueue(String uri) {
         try {
-//             songsToPlay.put("uris", uriArray);
             songsToPlay.put("context_uri", uri);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-
+    public void addTrackToPlaybackQueue(String uri) {
+        JSONArray uriArray = new JSONArray();
+        uriArray.put(uri);
+        try {
+             songsToPlay.put("uris", uriArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void playQueuedSong() {

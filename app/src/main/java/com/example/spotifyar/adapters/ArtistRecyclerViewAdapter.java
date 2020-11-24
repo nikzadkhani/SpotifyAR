@@ -24,6 +24,7 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
     private final SearchFragmentListener SFL;
 
     private int currentSelection = -1;
+    private int previousSelection = -1;
 
     private final int selectedColor;
     private final int normalColor;
@@ -60,8 +61,10 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                previousSelection = currentSelection;
                 currentSelection = position;
 
+                notifyItemChanged(previousSelection);
                 notifyItemChanged(currentSelection);
 
                 SFL.setArtistViewText(artists.get(position));

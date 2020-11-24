@@ -25,6 +25,9 @@ import com.google.ar.sceneform.rendering.AnimationData;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
 
@@ -78,10 +81,15 @@ public class ARActivity extends AppCompatActivity {
     double newDuration;
     private float tempo;
     private int durationInMs;
-    int repeatCount;
-    String selectedTrackName;
+    
     private int models_placed = 0;
     private int pause_count = 0;
+
+    private SpotifyAppRemote mSpotifyAppRemote;
+
+    private static final String CLIENT_ID = "730bb52a8e884ac9bb4e03b49856815f";
+    private static final String REDIRECT_URI = "https://com.example.spotifyar/callback";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +97,10 @@ public class ARActivity extends AppCompatActivity {
         setContentView(R.layout.activity_a_r);
 
         Intent intent = getIntent();
-        String selectedTrack = intent.getExtras().getString("uri");
+        Bundle args = intent.getExtras();
+        String uri = args.getString("uri");
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
-
-        PlayerService playerService = new PlayerService(ARActivity.this);
-        playerService.addSongToPlaybackQueue(selectedTrack);
 
         //get the tempo and duration time from audio class
         AudioService audioService = new AudioService(ARActivity.this);
@@ -103,14 +109,20 @@ public class ARActivity extends AppCompatActivity {
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
 
-                    playerService.playQueuedSong();
-                    playerService.loadCurrentPlayingTrack(() -> {
-                        Track currentTrack = playerService.getCurrentPlayingTrack();
+                    mSpotifyAppRemote.getPlayerApi().play(uri);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                        Track currentTrack = playerState.track;
                         Log.v("CurrentPlayingTrack", currentTrack.toString());
                         audioService.getAudioFeatures(currentTrack.uri, () -> {
                             Audio audio = audioService.getCurrentAudio();
                             tempo = audio.getTempo();
                             durationInMs = audio.getDuration();
+
 
                             //create the model
                             ModelRenderable.builder()
@@ -174,12 +186,12 @@ public class ARActivity extends AppCompatActivity {
                                     if (andyAnimator.isPaused()) {
                                         andyAnimator.resume();
                                         pause_count--;
-                                        playerService.resumePlayback();
+                                        mSpotifyAppRemote.getPlayerApi().resume();
                                     } else {
                                         andyAnimator.pause();
                                         pause_count++;
                                         if (models_placed == pause_count) {
-                                            playerService.pausePlayback();
+                                            mSpotifyAppRemote.getPlayerApi().pause();
                                         }
 
                                     }
@@ -191,6 +203,37 @@ public class ARActivity extends AppCompatActivity {
 
                     });
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        mSpotifyAppRemote.getConnectApi().connectSwitchToLocalDevice();
+                        Log.d("MainActivity", "Connected! Yay!");
+                    }
+
+                    public void onFailure(Throwable throwable) {
+                        Log.e("MyActivity", throwable.getMessage(), throwable);
+
+                    }
+                });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 
     @Override

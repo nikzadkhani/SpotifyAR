@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     tools:context=".fragments.SearchBarFragment">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/searchBar"
-        android:layout_width="165dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="17dp"
+        android:layout_weight="0.6"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/SearchHint"
         android:inputType="textShortMessage|textLongMessage|text"
-        app:layout_constraintEnd_toStartOf="@+id/spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content"
+        app:endIconDrawable="@android:drawable/ic_menu_search"
+        app:endIconMode="custom">
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/Search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_marginEnd="20dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.1"
+        android:layout_width="wrap_content">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="69dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="11dp"
-        app:layout_constraintBottom_toBottomOf="@+id/searchButton"
-        app:layout_constraintEnd_toStartOf="@+id/searchButton"
-        app:layout_constraintStart_toEndOf="@+id/searchBar"
-        app:layout_constraintTop_toTopOf="@+id/searchButton" />
+        <AutoCompleteTextView
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</LinearLayout>

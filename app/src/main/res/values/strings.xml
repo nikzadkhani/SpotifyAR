@@ -15,6 +15,13 @@
     <string name="library">Library</string>
     <string name="SearchHint">Search the Library...</string>
     <string name="Search">Search!</string>
+    <string name="connect_wifi">Connect to Wifi</string>
+    <string name="quit">Quit</string>
+    <string name="unable_to_connect">Unable to Connect to Wifi</string>
+    <string name="wifi_dialog_message">
+        You are not currently connect to Wifi. This application requires Wifi to authenticate
+        with Spotify. Please either quit this application or join a Wifi network.
+    </string>
 
     <string-array name="dropDown">
         <item>Artist</item>

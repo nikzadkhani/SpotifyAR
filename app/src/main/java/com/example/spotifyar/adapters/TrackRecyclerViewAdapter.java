@@ -80,8 +80,10 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                previousSelection = currentSelection;
                 currentSelection = position;
 
+                notifyItemChanged(previousSelection);
                 notifyItemChanged(currentSelection);
 
                 if (isLibrary) {

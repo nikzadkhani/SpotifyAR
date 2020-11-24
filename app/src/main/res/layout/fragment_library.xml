@@ -5,7 +5,7 @@
     android:id="@+id/libraryFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
+
     android:orientation="vertical"
     tools:context=".fragments.LibraryFragment">
 
@@ -13,6 +13,7 @@
         android:id="@+id/instructions"
         android:layout_width="333dp"
         android:layout_height="46dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/you_have_chosen"

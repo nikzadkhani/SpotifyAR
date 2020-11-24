@@ -24,6 +24,7 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
     private final SearchFragmentListener SFL;
 
     private int currentSelection = -1;
+    private int previousSelection = -1;
 
     private final int selectedColor;
     private final int normalColor;
@@ -62,8 +63,10 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                previousSelection = currentSelection;
                 currentSelection = position;
 
+                notifyItemChanged(previousSelection);
                 notifyItemChanged(currentSelection);
 
                 SFL.setAlbumViewText(albums.get(position));
