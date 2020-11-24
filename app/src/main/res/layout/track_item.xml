@@ -12,17 +12,16 @@
         android:layout_height="26dp"
         android:gravity="center_horizontal|fill"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/trackArtist"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/trackArtist"
-        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintHorizontal_bias="0.839"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/trackArtist"
-        android:layout_width="170dp"
-        android:layout_height="26dp"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="center_horizontal"
@@ -30,7 +29,8 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintHorizontal_bias="0.933"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

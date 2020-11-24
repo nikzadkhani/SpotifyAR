@@ -8,21 +8,21 @@
 
     <TextView
         android:id="@+id/albumTitle"
-        android:layout_width="170dp"
-        android:layout_height="26dp"
+        android:layout_width="196dp"
+        android:layout_height="25dp"
         android:gravity="center_horizontal|fill"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/albumArtist"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/albumArtist"
-        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintHorizontal_bias="0.732"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.516" />
 
     <TextView
         android:id="@+id/albumArtist"
-        android:layout_width="170dp"
-        android:layout_height="26dp"
+        android:layout_width="127dp"
+        android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="center_horizontal"

@@ -5,7 +5,8 @@
     android:id="@+id/ConstrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/welcome_wallpaper">
 
     <TextView
         android:id="@+id/txtView2"
