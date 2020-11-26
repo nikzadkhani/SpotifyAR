@@ -30,44 +30,6 @@ import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
-
-//Clean up code
-//Add Comments
-//Error Check
-//Show the group in case they have questions.
-
-
-//Two android guys before the dance finishes.
-//Important notes, all andys we make are the same andy. This is the reason for the crash. When I pause one andy all pause dancing.
-
-//Spamming it might cause a crash --> adding multiple andys dont crash. It only crashes when theyre dancing
-// E/MessageQueue-JNI: java.lang.IllegalStateException: Only one ModelAnimator may play on a ModelRenderable at a time
-//         at com.google.ar.sceneform.animation.AnimationEngine.addRenderable(Unknown Source:35)
-//         at com.google.ar.sceneform.animation.ModelAnimatorImpl.start(Unknown Source:42)
-//         at com.google.ar.sceneform.animation.ModelAnimator.start(Unknown Source:2)
-//         at com.example.spotifyar.ARActivity.lambda$onCreate$3$ARActivity(ARActivity.java:184)
-
-
-//https://stackoverflow.com/questions/55681374/how-to-play-multiple-animations-using-animatorset
-//Solution is to create their own dynamically
-
-//The same renderable, different nodes
-
-
-
-
-//Renderable smaller
-//Differe
-
-
-
-
-//Dragging the Andy/Scaling Andy --> No crash
-//Main
-
-
-
-
 public class ARActivity extends AppCompatActivity {
     private final String NO_PERMISSION = "Camera permission is needed to run this application";
     private final String TAG = "ARActivity";
@@ -102,14 +64,14 @@ public class ARActivity extends AppCompatActivity {
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
 
-        //get the tempo and duration time from audio class
+        // Create audio service for the playing song.
         AudioService audioService = new AudioService(ARActivity.this);
 
-        //start a dancing robot
+        // Start a dancing robot when the user single tap on the screen
+        // It requires user to find a plane to place the robot
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-
-                    //create the model
+                    // Create the model
                     ModelRenderable.builder()
                             .setSource(this, R.raw.andy_dance)
                             .build()
@@ -124,6 +86,7 @@ public class ARActivity extends AppCompatActivity {
                                         return null;
                                     });
 
+                    // Play the playlist.
                     mSpotifyAppRemote.getPlayerApi().play(uri);
                     try {
                         Thread.sleep(200);
@@ -135,6 +98,7 @@ public class ARActivity extends AppCompatActivity {
                         Track currentTrack = playerState.track;
                         Log.v("CurrentPlayingTrack", currentTrack.toString());
 
+                        //get the tempo and duration time of the playing song from audio class
                         audioService.getAudioFeatures(currentTrack.uri, () -> {
                             Audio audio = audioService.getCurrentAudio();
                             tempo = audio.getTempo();
@@ -148,46 +112,47 @@ public class ARActivity extends AppCompatActivity {
                                 return;
                             }
 
-                            // Create the Anchor.
+                            // Create the Anchor
+                            // Anchor is what the andy renderable is set on. It connects the AR to the enviornment. 
                             Anchor anchor = hitResult.createAnchor();
                             AnchorNode anchorNode = new AnchorNode(anchor);
                             anchorNode.setParent(arFragment.getArSceneView().getScene());
+                            // Define the size of the model.
                             anchorNode.setLocalScale(new Vector3(0.3f, 0.3f, 0.3f));
 
                             // Create the transformable andy and add it to the anchor.
+                            // The transformable node allows the user to resize and move around their andy model. 
                             TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
-                            // andy.getScaleController().setMinScale(0.1f);
-                            // andy.getScaleController().setMaxScale(1f);
-
-                            // andy.setLocalScale(new Vector3(0.1f, 0.1f, 1f));
-                            // Toast.makeText(getApplicationContext(), andy.getLocalScale().toString(), Toast.LENGTH_SHORT).show();
                             andy.setParent(anchorNode);
+                            // Sets the Renderable to display for this node.
                             andy.setRenderable(andyRenderable);
+                            // Numbers of robots the user places.
                             models_placed++;
                             andy.select();
 
 
                             // Get the animation data called "andy_dance" from the `andyRenderable`.
                             AnimationData danceData = andyRenderable.getAnimationData("andy_dance");
+                            // Set Animator using dance data for robot.
                             ModelAnimator andyAnimator = new ModelAnimator(danceData, andyRenderable);
-                            //<100 divide by 2, Remain the same (lets use this) (function for this)
+                            // Adjust the tempo to show obviously different dancing speeds between different tempos.
+                            // Temp <100: divide by 2; else: Remain the same.
                             if (tempo < 100) {
                                 newDuration = (double) (2 * AVERAGE_BPM / tempo);
                             } else {
                                 newDuration = (double) (AVERAGE_BPM / tempo);
                             }
 
-                            //Song loops and robot keeps dancing.
+                            // Shorted duration of the animation makes robots dancing faster. Vice versa.
                             andyAnimator.setDuration((long) (andyAnimator.getTotalDuration() * newDuration));
-                            andyAnimator.setRepeatCount((int) ((durationInMs / (andyAnimator.getTotalDuration() * newDuration))));                    //Make an equation that takes in BPM and converts it into a extension of time.
+                            // The dancing animation will repeat integer times until song ends.
+                            andyAnimator.setRepeatCount((int) ((durationInMs / (andyAnimator.getTotalDuration() * newDuration)))); 
 
-                            //Repeat count should be the total milliseconds of song/ total duration to dance through whole song
-                            // Get the animation data called "andy_dance" from the `andyRenderable`.
-
-                            //tap to  pause or resume the robot
+                            // Tap on one robot to pause or resume its dancing
                             andy.setOnTapListener(new Node.OnTapListener() {
                                 @Override
                                 public void onTap(HitTestResult hitTestResult, MotionEvent motionEvent) {
+                                    // If there's at least one robot dancing, the song will keep playing.
                                     if (andyAnimator.isPaused()) {
                                         andyAnimator.resume();
                                         pause_count--;
@@ -195,6 +160,7 @@ public class ARActivity extends AppCompatActivity {
                                     } else {
                                         andyAnimator.pause();
                                         pause_count++;
+                                        // if all the robots dancing is paused, the song will get paused.
                                         if (models_placed == pause_count) {
                                             mSpotifyAppRemote.getPlayerApi().pause();
                                         }
@@ -202,7 +168,6 @@ public class ARActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
                             andyAnimator.start();
                         });
 
@@ -213,12 +178,13 @@ public class ARActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Setup authentication to developer portal.
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
                         .showAuthView(true)
                         .build();
-
+        // Setup connection to Spotify app
         SpotifyAppRemote.connect(this, connectionParams,
                 new Connector.ConnectionListener() {
 
@@ -235,6 +201,7 @@ public class ARActivity extends AppCompatActivity {
                 });
     }
 
+    // Disconnect when stop the AR activity.
     @Override
     protected void onStop() {
         super.onStop();
