@@ -43,7 +43,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         this.selectedColor = ContextCompat.getColor(adapterContext, R.color.colorSecondary);
         this.normalColor = ContextCompat.getColor(adapterContext, R.color.colorBackground);
 
-        this.isLibrary = true;
+        this.isLibrary = true; // means we are being called from LibraryFragment
     }
 
     public TrackRecyclerViewAdapter(Context context, Track[] tracks, SearchFragmentListener SFL) {

@@ -20,16 +20,27 @@ public class AudioService {
     private RequestQueue queue;
     private Audio audio;
 
+
+    // Create JSonObjectRequest and add to volley request queue
+    // Request Queue will execute the JSONObjectRequest for us
     public AudioService(Context context) {
         this.sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(context);
     }
 
+
+
+
+
+
+
     public Audio getCurrentAudio(){
         return audio;
     }
 
+
     public Audio getAudioFeatures(String uri, final VolleyCallBack callBack) {
+        //Ensuring URI follows Spotify Code guidelines 
         if (uri.equals("") || !uri.contains(":"))
             throw new IllegalArgumentException("Invalid URI in AudioService");
 
@@ -41,12 +52,15 @@ public class AudioService {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint, null, response -> {
                     Gson gson = new Gson();
-                    audio = gson.fromJson(response.toString(), Audio.class);
-                    callBack.onSuccess();
+                    audio = gson.fromJson(response.toString(), Audio.class); // Put our json info into an Audio class object
+                    callBack.onSuccess(); // use our volley callback
                 }, error -> {
                     // TODO: Handle error
 
                 }) {
+
+            // Add our authorization token to the jsonObjectRequst
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();

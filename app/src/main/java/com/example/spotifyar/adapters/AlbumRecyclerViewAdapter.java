@@ -16,7 +16,7 @@ import com.example.spotifyar.models.Album;
 
 import java.util.ArrayList;
 
-
+/**/
 public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<Album> albums;

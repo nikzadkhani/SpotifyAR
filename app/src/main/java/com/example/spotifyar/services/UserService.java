@@ -28,12 +28,15 @@ public class UserService {
         return user;
     }
 
+    // Create JSONObjectRequest and add to Volley Request Queue
+    // Request Queue will execute the JSONObjectRequest for us
     public void get(final VolleyCallBack callBack) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(ENDPOINT, null, response -> {
             Gson gson = new Gson();
-            user = gson.fromJson(response.toString(), User.class);
-            callBack.onSuccess();
+            user = gson.fromJson(response.toString(), User.class); // Put our json info into a User class object
+            callBack.onSuccess(); // use our volley callback
         }, error -> get(() -> {Log.v("Fail", "WE FAILED SO SAD XDDDDDDDDDDDDD");})) {
+            // Add our authorization token to the jsonObjectRequst
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();

@@ -34,6 +34,9 @@ public class PlayerService {
 
     Track currentPlayingTrack;
 
+    // Creqte JSonObjectRequest and add to volley request queue
+    // Request Queue will execute the JSonObjectRequest for us 
+
     public PlayerService(Context context){
         sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(context);
@@ -74,6 +77,9 @@ public class PlayerService {
                 }, error -> {
                     Log.d("Player Service", error.toString());
                 }) {
+
+           // Add our authorization token to the jsonObjectRequst
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -143,8 +149,8 @@ public class PlayerService {
                 (Request.Method.GET, endpoint, null, response -> {
                     Log.v("response", response.toString());
                     Gson gson = new Gson();
-                    currentPlayingTrack = gson.fromJson(response.optJSONObject("item").toString(), Track.class);
-                    callBack.onSuccess();
+                    currentPlayingTrack = gson.fromJson(response.optJSONObject("item").toString(), Track.class); // Put our json info into a playservice class object
+                    callBack.onSuccess(); // use our volley callback
                 }, error -> {
                     // TODO: Handle error
 

@@ -27,6 +27,10 @@ public class TrackService {
     private SharedPreferences sharedPreferences;
     private RequestQueue queue;
 
+
+    // Create JSonObjectRequest and add to volley request queue
+    // Request Queue will execute the JSonObjectRequest for us 
+
     public TrackService(Context context) {
         sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(context);
@@ -49,18 +53,20 @@ public class TrackService {
                             JSONObject object = jsonArray.getJSONObject(n);
                             object = object.optJSONObject("track");
 
-                            Track track = gson.fromJson(object.toString(), Track.class);
+                            Track track = gson.fromJson(object.toString(), Track.class); // Put our json infor into a trackService class object
 //                            Log.d("Inside Track Service", track.getUri());
                             recentlyPlayedTracks.add(track);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                    callBack.onSuccess();
+                    callBack.onSuccess(); // Use volley callback 
                 }, error -> {
                     // TODO: Handle error
 
                 }) {
+
+            // Add our authorization token to the jsonObjectRequest 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -73,7 +79,7 @@ public class TrackService {
         queue.add(jsonObjectRequest);
         return recentlyPlayedTracks;
     }
-
+    
     public Track[] getLibraryTracks(final VolleyCallBack callBack) {
         String endpoint = "https://api.spotify.com/v1/me/tracks";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -91,10 +97,7 @@ public class TrackService {
                         }
                     }
                     callBack.onSuccess();
-                }, error -> {
-                    // TODO: Handle error
-
-                }) {
+                }, error -> {}) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();

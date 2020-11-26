@@ -16,6 +16,7 @@ import com.example.spotifyar.interfaces.SearchFragmentListener;
 import com.example.spotifyar.interfaces.TrackFragmentListener;
 import com.spotify.protocol.types.Track;
 
+/*Fragment that holds the selected song text and the dance button on each view*/
 public class LibraryFragment extends Fragment {
     private TextView trackConfirmView;
     private Button danceBtn;
@@ -34,6 +35,7 @@ public class LibraryFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+/*Methods for setting the default text to empty and initializing the dance button*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class LibraryFragment extends Fragment {
         return view;
     }
 
+/*Once selected, set the text to display the selected song and artist*/
     public void setConfirmText(Track track) {
         trackConfirmView.setText(track.name + " by " + track.artists.get(0).name);
     }

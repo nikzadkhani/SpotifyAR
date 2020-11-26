@@ -17,6 +17,7 @@ import com.example.spotifyar.models.Album;
 import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Track;
 
+/*Fragment for search bar and dance button*/
 public class SearchFragment extends Fragment {
     private Button danceBtn;
     private TextView searchedTrackView;
@@ -41,6 +42,7 @@ public class SearchFragment extends Fragment {
         super.onAttach(context);
     }
 
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class SearchFragment extends Fragment {
 
         return view;
     }
+
+   //Set confirmation based on spinner selection
 
     public void setConfirmTrackViewText(Track track) {
         String newConfirmText = track.name + " by " + track.artists.get(0).name;

@@ -34,6 +34,8 @@ public class SearchService {
     private ArrayList<Artist> artistArray = new ArrayList<>();
     private ArrayList<Album> albumArray = new ArrayList<>();
 
+    // Creqte JSonObjectRequest and add to volley request queue
+    // Request Queue will execute the JSonObjectRequest for us 
 
 
     public SearchService(Context context) {
@@ -72,17 +74,19 @@ public class SearchService {
                         for (int n = 0; n < jsonArray.length(); n++) {
                             try {
                                 JSONObject object = jsonArray.getJSONObject(n);
-                                Track track = gson.fromJson(object.toString(), Track.class);
+                                Track track = gson.fromJson(object.toString(), Track.class); // // Put our json info into a searchService class object
                                 trackArray.add(track);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        callBack.onSuccess();
+                        callBack.onSuccess(); // use our volley callback 
                     }, error -> {
                 // TODO: Handle Error
             }) {
+
+                // Add our authorization token to the jsonObjectRequest
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();

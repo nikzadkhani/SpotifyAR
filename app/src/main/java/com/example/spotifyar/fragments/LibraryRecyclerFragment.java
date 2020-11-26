@@ -59,7 +59,7 @@ public class LibraryRecyclerFragment extends Fragment {
 //        TFL.setTrackViewText("yellow");
 
 
-        // Set the adapter
+        // Set the adapter so list of tracks is shown
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
@@ -78,6 +78,7 @@ public class LibraryRecyclerFragment extends Fragment {
         return view;
     }
     
+    //send track information to the adapter to display
     public Track  getCurrentSelectedTrack() {
         return tracks[this.currentSelectedTrackIndex];
     }

@@ -79,24 +79,23 @@ public class SearchBarFragment extends Fragment {
         AutoCompleteTextView queryTypeSelection =  view.findViewById(R.id.spinner);
 
 
-
+        //create adapter for the selected spinner item
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.dropdown_menu_popup_item,
                 QUERY_TYPES
         );
-
+        //Set the adapter
         queryTypeSelection.setAdapter(adapter);
         queryTypeSelection.setText("Track", false);
 
         searchBarText.setOnKeyListener(new View.OnKeyListener() {
 
-
+           //Run when search input is entered
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     String input = searchBar.getEditText().getText().toString();
-                    //searchBar.getEditText().setText("");
                     String queryType = queryTypeSelection.getText().toString();
 
                     //Assume we have the correct data, now we have to transfer it to the main activity

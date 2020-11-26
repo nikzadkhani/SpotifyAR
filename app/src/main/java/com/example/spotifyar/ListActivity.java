@@ -64,10 +64,11 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         
+        //
         listActivityViewAdapter = new ListActivityViewAdapter(this);
         viewPager.setAdapter(listActivityViewAdapter);
 
-        
+        // sync up our tab layout mediator with the adapter
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
             if (position == 0) {
@@ -79,12 +80,15 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     }
 
     @Override
+    // sets viewtext to the current track in library 
     public void setLibraryTrackViewText(Track track) {
         getLibraryFragment().setConfirmText(track);
         currentTrack = track;
     }
 
     @Override
+
+    // loads arraylist of tracks and updates searchrecyclerfragment
     public void loadTrackData(ArrayList<Track> tracks) {
         FragmentManager fcm = getSearchFragment().getChildFragmentManager();
         searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
@@ -94,6 +98,8 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     }
 
     @Override
+
+    // loads arraylist of artists and updates searchreycler fragment
     public void loadArtistData(ArrayList<Artist> artists) {
         FragmentManager fcm = getSearchFragment().getChildFragmentManager();
         searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
@@ -103,6 +109,8 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     }
 
     @Override
+
+    // loads album arraylist and updates search recycler fragment 
     public void loadAlbumData(ArrayList<Album> albums) {
         FragmentManager fcm = getSearchFragment().getChildFragmentManager();
         searchRecyclerFragment = (SearchRecyclerFragment) fcm.findFragmentById(R.id.searchRecyclerFrag);
@@ -111,6 +119,7 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
         currentAlbum = null;
     }
 
+    // sets searchtrack viewtext to track  
     @Override
     public void setSearchTrackViewText(Track track) {
         getSearchFragment().setConfirmTrackViewText(track);
@@ -119,6 +128,8 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     }
 
     @Override
+
+    // sets setartist viewtext to artist 
     public void setArtistViewText(Artist artist) {
         getSearchFragment().setConfirmArtistViewText(artist);
         currentArtist = artist;
@@ -126,6 +137,7 @@ public class ListActivity extends AppCompatActivity implements SearchFragmentLis
     }
 
     @Override
+    // sets album viewtext to album 
     public void setAlbumViewText(Album album) {
         getSearchFragment().setConfirmAlbumViewText(album);
         currentAlbum = album;
